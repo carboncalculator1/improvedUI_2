@@ -1903,10 +1903,64 @@ tbody tr:hover {
     min-width: auto;
   }
   
-  .waste-input-container {
-    grid-template-columns: 1fr;
-    gap: var(--space-3);
-  }
+    .waste-input-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+        margin-top: var(--space-3);
+    }
+
+    .waste-type-input {
+        padding: 1rem 0.75rem;
+        min-height: auto;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .waste-type-input label {
+        font-size: 0.75rem;
+        margin-bottom: 0.5rem;
+        flex-direction: column;
+        gap: 0.25rem;
+        align-items: center;
+    }
+
+    .waste-type-input .icon {
+        font-size: 1rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .waste-type-input .slider-container {
+        padding: 0.75rem 0.5rem;
+        gap: 0.5rem;
+    }
+
+    .waste-type-input .slider {
+        height: 6px;
+    }
+
+    .waste-type-input .slider::-webkit-slider-thumb {
+        width: 18px;
+        height: 18px;
+        border: 2px solid white;
+    }
+
+    .waste-type-input .slider-value {
+        min-width: 50px;
+        font-size: 0.8rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    /* Specific adjustments for each waste type to ensure consistency */
+    .waste-type-input:nth-child(1),
+    .waste-type-input:nth-child(2),
+    .waste-type-input:nth-child(3),
+    .waste-type-input:nth-child(4) {
+        aspect-ratio: 1 / 1;
+        min-height: 120px;
+    }
   
   .emissions-summary {
     grid-template-columns: 1fr;
@@ -2027,6 +2081,19 @@ tbody tr:hover {
         max-height: 60vh;
         overflow-y: auto;
     }
+   .waste-input-container {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.5rem;
+    }
+
+    .waste-type-input {
+        min-height: 100px;
+        padding: 0.75rem 0.5rem;
+    }
+
+    .waste-type-input label {
+        font-size: 0.7rem;
+    }
 }
 
 /* Extra small screens (<480px) */
@@ -2068,6 +2135,38 @@ tbody tr:hover {
   .site-footer {
     padding: var(--space-4);
   }
+       .waste-input-container {
+        gap: 0.5rem;
+    }
+
+    .waste-type-input {
+        padding: 0.75rem 0.5rem;
+    }
+
+    .waste-type-input label {
+        font-size: 0.7rem;
+    }
+
+    .waste-type-input .icon {
+        font-size: 0.9rem;
+    }
+
+    .waste-type-input .slider-container {
+        padding: 0.5rem 0.25rem;
+    }
+
+    .waste-type-input .slider-value {
+        min-width: 45px;
+        font-size: 0.75rem;
+        padding: 0.2rem 0.4rem;
+    }
+
+    .waste-type-input:nth-child(1),
+    .waste-type-input:nth-child(2),
+    .waste-type-input:nth-child(3),
+    .waste-type-input:nth-child(4) {
+        min-height: 110px;
+    }
 }
 
 /* ==========================================================================
@@ -2954,5 +3053,6 @@ a:focus {
         text-align: center;
     }
 }
+
 
 
