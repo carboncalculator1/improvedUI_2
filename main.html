@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Calculator Yanga - Sustainable Future</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <!-- 3D Background Animation -->
+    <div id="threejs-background"></div>
+
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-leaf"></i>
+                <span>Carbon Calculator Yanga</span>
+            </div>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#mission">Mission</a>
+                <a href="#impact">Impact</a>
+                <a href="#team">Team</a>
+                <button class="cta-button" onclick="goToCalculator()">
+                    Go to Calculator <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-seedling"></i>
+                Sustainable Future Initiative
+            </div>
+            <h1 class="hero-title">
+                Measure Your <span class="gradient-text">Carbon Footprint</span>
+                <br>Shape a Greener Tomorrow
+            </h1>
+            <p class="hero-description">
+                Join thousands of environmentally conscious individuals and businesses 
+                tracking their carbon emissions. Our advanced calculator helps you understand 
+                and reduce your environmental impact.
+            </p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-number" id="usersCount">10,000+</div>
+                    <div class="stat-label">Active Users</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number" id="carbonSaved">250+</div>
+                    <div class="stat-label">Tonnes CO₂ Reduced</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number" id="projects">50+</div>
+                    <div class="stat-label">Green Projects</div>
+                </div>
+            </div>
+            <div class="hero-actions">
+                <button class="primary-btn" onclick="goToCalculator()">
+                    <i class="fas fa-calculator"></i>
+                    Start Calculating
+                </button>
+                <button class="secondary-btn" onclick="scrollToSection('about')">
+                    <i class="fas fa-play-circle"></i>
+                    Watch Demo
+                </button>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="floating-elements">
+                <div class="floating-element element-1">
+                    <i class="fas fa-tree"></i>
+                </div>
+                <div class="floating-element element-2">
+                    <i class="fas fa-recycle"></i>
+                </div>
+                <div class="floating-element element-3">
+                    <i class="fas fa-solar-panel"></i>
+                </div>
+                <div class="floating-element element-4">
+                    <i class="fas fa-wind"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Carbon Awareness Matters</h2>
+                <p>Understanding your environmental impact is the first step toward meaningful change</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Real-time Analytics</h3>
+                    <p>Track your carbon emissions across multiple sectors with precision and accuracy</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3>Smart Recommendations</h3>
+                    <p>Get personalized suggestions to reduce your carbon footprint effectively</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-globe-africa"></i>
+                    </div>
+                    <h3>Localized Data</h3>
+                    <p>Zambia-specific emission factors for accurate calculations</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h3>Offset Projects</h3>
+                    <p>Support local reforestation and sustainability initiatives</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CEO Quote Section -->
+    <section class="quote-section">
+        <div class="container">
+            <div class="quote-card">
+                <div class="quote-content">
+                    <div class="quote-icon">
+                        <i class="fas fa-quote-left"></i>
+                    </div>
+                    <blockquote>
+                        "At Carbon Calculator Yanga, we believe that environmental responsibility 
+                        begins with awareness. By empowering individuals and businesses with the 
+                        tools to measure their carbon footprint, we're not just calculating emissions 
+                        - we're cultivating a culture of sustainability that will benefit generations to come."
+                    </blockquote>
+                    <div class="quote-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="author-info">
+                            <div class="author-name">Dr. Sarah Mwila</div>
+                            <div class="author-title">CEO & Founder, Carbon Calculator Yanga Foundation</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section id="mission" class="mission-section">
+        <div class="container">
+            <div class="mission-content">
+                <div class="mission-text">
+                    <h2>Our Mission</h2>
+                    <p>
+                        To create a sustainable future by making carbon awareness accessible to everyone. 
+                        We're committed to providing accurate, easy-to-use tools that help individuals, 
+                        businesses, and communities understand and reduce their environmental impact.
+                    </p>
+                    <div class="mission-stats">
+                        <div class="mission-stat">
+                            <div class="mission-number">2025</div>
+                            <div class="mission-label">Target Year for Carbon Neutrality</div>
+                        </div>
+                        <div class="mission-stat">
+                            <div class="mission-number">100K+</div>
+                            <div class="mission-label">Trees Planted</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mission-visual">
+                    <div class="earth-visual">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Section -->
+    <section id="impact" class="impact-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Impact</h2>
+                <p>Join the movement making a real difference in Zambia and beyond</p>
+            </div>
+            <div class="impact-grid">
+                <div class="impact-card">
+                    <div class="impact-number">15,000+</div>
+                    <div class="impact-label">Calculations Performed</div>
+                </div>
+                <div class="impact-card">
+                    <div class="impact-number">500+</div>
+                    <div class="impact-label">Businesses Engaged</div>
+                </div>
+                <div class="impact-card">
+                    <div class="impact-number">25+</div>
+                    <div class="impact-label">Schools Participating</div>
+                </div>
+                <div class="impact-card">
+                    <div class="impact-number">75%</div>
+                    <div class="impact-label">Reduction in Carbon Footprint</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="team-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Leadership</h2>
+                <p>Meet the team driving sustainable change</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h3>Dr. Sarah Mwila</h3>
+                    <p class="team-role">Chief Executive Officer</p>
+                    <p class="team-bio">Environmental scientist with 15+ years in sustainability research</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>James Banda</h3>
+                    <p class="team-role">Head of Analytics</p>
+                    <p class="team-bio">Data scientist specializing in environmental impact assessment</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Chloe Ngoma</h3>
+                    <p class="team-role">Community Manager</p>
+                    <p class="team-bio">Leading outreach and education programs across Zambia</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Make a Difference?</h2>
+                <p>Start your sustainability journey today with our comprehensive carbon calculator</p>
+                <button class="cta-button-large" onclick="goToCalculator()">
+                    <i class="fas fa-calculator"></i>
+                    Go to Carbon Calculator
+                </button>
+                <div class="cta-features">
+                    <div class="cta-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Free to Use</span>
+                    </div>
+                    <div class="cta-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>No Registration Required</span>
+                    </div>
+                    <div class="cta-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Instant Results</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-leaf"></i>
+                        Carbon Calculator Yanga
+                    </div>
+                    <p class="footer-description">
+                        Empowering sustainable choices through accurate carbon footprint calculation 
+                        and environmental awareness.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <a href="#about">About Us</a>
+                    <a href="#mission">Our Mission</a>
+                    <a href="#impact">Impact</a>
+                    <a href="#team">Our Team</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <a href="index.html">Carbon Calculator</a>
+                    <a href="#">Sustainability Tips</a>
+                    <a href="#">Educational Materials</a>
+                    <a href="#">Research Papers</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-envelope"></i> info@climateyanga.com</p>
+                    <p><i class="fas fa-phone"></i> +260 123 456 789</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Lusaka, Zambia</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Carbon Calculator Yanga Foundation. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="terms.html">Terms of Use</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
