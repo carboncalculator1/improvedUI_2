@@ -14,23 +14,32 @@
     <div id="threejs-background"></div>
 
     <!-- Navigation -->
-    <nav class="main-nav">
-        <div class="nav-container">
-            <div class="logo">
-                <i class="fas fa-leaf"></i>
-                <span>Carbon Calculator Yanga</span>
-            </div>
-            <div class="nav-links">
-                <a href="#about">About</a>
-                <a href="#mission">Mission</a>
-                <a href="#impact">Impact</a>
-                <a href="#team">Team</a>
-                <button class="cta-button" onclick="goToCalculator()">
-                    Go to Calculator <i class="fas fa-arrow-right"></i>
-                </button>
-            </div>
+<!-- Navigation -->
+<nav class="main-nav">
+    <div class="nav-container">
+        <div class="logo">
+            <i class="fas fa-leaf"></i>
+            <span>Carbon Calculator Yanga</span>
         </div>
-    </nav>
+        
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" id="mobileMenuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        
+        <div class="nav-links" id="navLinks">
+            <a href="#about" onclick="closeMobileMenu()">About</a>
+            <a href="#mission" onclick="closeMobileMenu()">Mission</a>
+            <a href="#impact" onclick="closeMobileMenu()">Impact</a>
+            <a href="#team" onclick="closeMobileMenu()">Team</a>
+            <button class="cta-button" onclick="goToCalculator(); closeMobileMenu()">
+                Go to Calculator <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+</nav>
 
     <!-- Hero Section -->
     <section class="hero">
