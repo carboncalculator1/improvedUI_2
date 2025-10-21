@@ -1987,6 +1987,46 @@ tbody tr:hover {
   .sidebar {
     display: none;
   }
+
+   /* Improve touch targets */
+    button, .cta-button, .primary-btn, .secondary-btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* Prevent zoom on input focus */
+    input, select, textarea {
+        font-size: 16px;
+    }
+    
+    /* Smooth scrolling for iOS */
+    html {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Better section spacing */
+    section {
+        padding: 3rem 0;
+    }
+    
+    /* Optimize images */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+/* Landscape mode optimization */
+@media (max-width: 768px) and (orientation: landscape) {
+    .hero {
+        min-height: auto;
+        padding: 4rem 1rem 1rem;
+    }
+    
+    .nav-links {
+        max-height: 60vh;
+        overflow-y: auto;
+    }
 }
 
 /* Extra small screens (<480px) */
@@ -2914,4 +2954,5 @@ a:focus {
         text-align: center;
     }
 }
+
 
