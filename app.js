@@ -74,6 +74,213 @@ const recyclingMultipliers = {
         monthly: 1    // Already monthly
     };
 
+// Three.js Particle System for Carbon Emissions Visualization
+let particleScene, particleCamera, particleRenderer, particleSystem;
+let sectorParticles = {};
+let isParticleSystemInitialized = false;
+
+function initParticleSystem() {
+    if (isParticleSystemInitialized) return;
+    
+    // Scene setup
+    particleScene = new THREE.Scene();
+    particleCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    particleRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    
+    particleRenderer.setSize(window.innerWidth, window.innerHeight);
+    particleRenderer.setClearColor(0x000000, 0);
+    document.getElementById('particle-container').appendChild(particleRenderer.domElement);
+    
+    // Camera position
+    particleCamera.position.z = 15;
+    
+    // Create particle systems for each sector
+    const sectors = ['personal', 'construction', 'manufacturing', 'agriculture', 'openair', 'student'];
+    const sectorColors = {
+        'personal': 0x10b981,     // Green
+        'construction': 0x3b82f6,  // Blue
+        'manufacturing': 0xf59e0b, // Yellow
+        'agriculture': 0x84cc16,   // Lime
+        'openair': 0xef4444,      // Red
+        'student': 0x8b5cf6       // Purple
+    };
+    
+    const sectorPositions = {
+        'personal': { x: -8, y: 3, z: 0 },
+        'construction': { x: -4, y: 3, z: 0 },
+        'manufacturing': { x: 0, y: 3, z: 0 },
+        'agriculture': { x: 4, y: 3, z: 0 },
+        'openair': { x: 8, y: 3, z: 0 },
+        'student': { x: 0, y: -3, z: 0 }
+    };
+    
+    sectors.forEach(sector => {
+        createSectorParticles(sector, sectorColors[sector], sectorPositions[sector]);
+    });
+    
+    // Add ambient light
+    const ambientLight = new THREE.AmbientLight(0x404040);
+    particleScene.add(ambientLight);
+    
+    // Add directional light
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    directionalLight.position.set(1, 1, 1);
+    particleScene.add(directionalLight);
+    
+    isParticleSystemInitialized = true;
+    animateParticles();
+}
+
+function createSectorParticles(sectorName, color, position) {
+    const particleCount = 50;
+    const particles = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const colors = new Float32Array(particleCount * 3);
+    const velocities = [];
+    const lifetimes = [];
+    
+    // Convert hex color to RGB
+    const rgbColor = new THREE.Color(color);
+    
+    for (let i = 0; i < particleCount; i++) {
+        const i3 = i * 3;
+        
+        // Initial positions around the sector source
+        positions[i3] = position.x + (Math.random() - 0.5) * 2;
+        positions[i3 + 1] = position.y + (Math.random() - 0.5) * 2;
+        positions[i3 + 2] = position.z + (Math.random() - 0.5) * 2;
+        
+        // Colors with some variation
+        colors[i3] = rgbColor.r + (Math.random() - 0.5) * 0.2;
+        colors[i3 + 1] = rgbColor.g + (Math.random() - 0.5) * 0.2;
+        colors[i3 + 2] = rgbColor.b + (Math.random() - 0.5) * 0.2;
+        
+        // Random velocities (flowing downward)
+        velocities.push({
+            x: (Math.random() - 0.5) * 0.02,
+            y: -Math.random() * 0.05 - 0.02,
+            z: (Math.random() - 0.5) * 0.02
+        });
+        
+        lifetimes.push(Math.random() * 100);
+    }
+    
+    particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    particles.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    
+    const particleMaterial = new THREE.PointsMaterial({
+        size: 0.1,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.6,
+        blending: THREE.AdditiveBlending
+    });
+    
+    const particleSystem = new THREE.Points(particles, particleMaterial);
+    particleScene.add(particleSystem);
+    
+    sectorParticles[sectorName] = {
+        system: particleSystem,
+        geometry: particles,
+        velocities: velocities,
+        lifetimes: lifetimes,
+        basePosition: position,
+        active: false
+    };
+}
+
+function animateParticles() {
+    if (!isParticleSystemInitialized) return;
+    
+    requestAnimationFrame(animateParticles);
+    
+    Object.keys(sectorParticles).forEach(sectorName => {
+        const particleData = sectorParticles[sectorName];
+        if (!particleData.active) return;
+        
+        const positions = particleData.geometry.attributes.position.array;
+        const velocities = particleData.velocities;
+        const lifetimes = particleData.lifetimes;
+        
+        for (let i = 0; i < positions.length / 3; i++) {
+            const i3 = i * 3;
+            
+            // Update particle position based on velocity
+            positions[i3] += velocities[i].x;
+            positions[i3 + 1] += velocities[i].y;
+            positions[i3 + 2] += velocities[i].z;
+            
+            // Update lifetime
+            lifetimes[i]--;
+            
+            // Reset particles that are too old or out of bounds
+            if (lifetimes[i] <= 0 || positions[i3 + 1] < -10) {
+                // Reset to base position with some randomness
+                positions[i3] = particleData.basePosition.x + (Math.random() - 0.5) * 2;
+                positions[i3 + 1] = particleData.basePosition.y + (Math.random() - 0.5) * 2;
+                positions[i3 + 2] = particleData.basePosition.z + (Math.random() - 0.5) * 2;
+                
+                lifetimes[i] = Math.random() * 100 + 50;
+                
+                // Reset velocity
+                velocities[i] = {
+                    x: (Math.random() - 0.5) * 0.02,
+                    y: -Math.random() * 0.05 - 0.02,
+                    z: (Math.random() - 0.5) * 0.02
+                };
+            }
+        }
+        
+        particleData.geometry.attributes.position.needsUpdate = true;
+    });
+    
+    // Gentle camera rotation for dynamic effect
+    particleCamera.position.x = Math.sin(Date.now() * 0.0001) * 2;
+    particleCamera.position.z = 15 + Math.cos(Date.now() * 0.0001) * 2;
+    particleCamera.lookAt(0, 0, 0);
+    
+    particleRenderer.render(particleScene, particleCamera);
+}
+
+function activateSectorParticles(sectorName) {
+    // Deactivate all sectors first
+    Object.keys(sectorParticles).forEach(sector => {
+        sectorParticles[sector].active = false;
+    });
+    
+    // Activate the current sector
+    if (sectorParticles[sectorName]) {
+        sectorParticles[sectorName].active = true;
+    }
+}
+
+function updateParticleIntensity(sectorName, intensity) {
+    // Scale particle activity based on calculation intensity
+    if (sectorParticles[sectorName]) {
+        const particleCount = sectorParticles[sectorName].geometry.attributes.position.array.length / 3;
+        const activeParticles = Math.min(particleCount, Math.floor(intensity * 2));
+        
+        // You can adjust particle behavior based on intensity here
+        // For example, increase particle speed or size
+    }
+}
+
+// Handle window resize
+function handleResize() {
+    if (!isParticleSystemInitialized) return;
+    
+    particleCamera.aspect = window.innerWidth / window.innerHeight;
+    particleCamera.updateProjectionMatrix();
+    particleRenderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+// Initialize particle system when page loads
+window.addEventListener('load', function() {
+    setTimeout(initParticleSystem, 1000); // Delay to ensure page is loaded
+});
+
+window.addEventListener('resize', handleResize);
+
     function showSection(section) {
         document.getElementById(currentSection).classList.remove('active');
         document.getElementById('results').classList.remove('active');
@@ -81,6 +288,11 @@ const recyclingMultipliers = {
         document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelector(`[onclick="showSection('${section}')"]`).classList.add('active');
         currentSection = section;
+
+			// Activate particles for the current section
+    		if (isParticleSystemInitialized) {
+        		activateSectorParticles(section);
+    		}
     }
 
     function updateSliderValue(slider, outputId) {
@@ -204,6 +416,11 @@ async function calculatePersonal() {
     
     // After calculation
     const saved = await saveCalculation({...inputs, waste: wasteInputs}, results, 'personal');
+
+	    // After calculation, update particle intensity
+    if (isParticleSystemInitialized) {
+        updateParticleIntensity('personal', results.total / 1000); // Scale intensity
+    }
     
     displayResults(results);
 }
@@ -236,6 +453,10 @@ async function calculatePersonal() {
 	
 	// After calculation
     	const saved = await saveCalculation(inputs, results, 'construction');
+
+	    if (isParticleSystemInitialized) {
+        updateParticleIntensity('construction', results.total / 1000);
+    }
     	
 
         displayResults(results);
@@ -269,7 +490,10 @@ async function calculatePersonal() {
 
     		// After calculation
     		const saved = await saveCalculation(inputs, results, 'manufacturing');
-    		
+
+	       if (isParticleSystemInitialized) {
+        updateParticleIntensity('manufacturing', results.total / 1000);
+    }
 
         displayResults(results);
     }
@@ -302,6 +526,10 @@ async function calculateAgriculture() {
 
     // Save to Firestore
     const saved = await saveCalculation(inputs, results, 'agriculture');
+
+	    if (isParticleSystemInitialized) {
+        updateParticleIntensity('agriculture', results.total / 1000);
+    }
 
     displayResults(results);
 }
@@ -341,6 +569,10 @@ async function calculateOpenAir() {
 
     // Save to Firestore
     const saved = await saveCalculation(inputs, results, 'openair');
+
+	    if (isParticleSystemInitialized) {
+        updateParticleIntensity('openair', results.total / 1000);
+    }
 
     displayOpenAirResults(results);
 }
@@ -435,7 +667,10 @@ async function calculateStudent() {
 
     // Save to Firestore
     const saved = await saveCalculation(inputs, results, 'student');
-    
+
+	    if (isParticleSystemInitialized) {
+        updateParticleIntensity('student', results.total / 1000);
+    }
     displayResults(results);
 }
 
@@ -947,6 +1182,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+function smoothlyActivateParticles(sectorName) {
+    // Fade out all particles first
+    Object.keys(sectorParticles).forEach(sector => {
+        if (sectorParticles[sector].active) {
+            // Smooth deactivation
+            setTimeout(() => {
+                sectorParticles[sector].active = false;
+            }, 500);
+        }
+    });
+    
+    // Activate new sector particles after a short delay
+    setTimeout(() => {
+        if (sectorParticles[sectorName]) {
+            sectorParticles[sectorName].active = true;
+        }
+    }, 600);
+}
 
 
 
