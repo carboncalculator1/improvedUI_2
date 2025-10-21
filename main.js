@@ -167,3 +167,75 @@ style.textContent = `
     .feature-card:nth-child(4) { transition-delay: 0.4s; }
 `;
 document.head.appendChild(style);
+
+// Mobile menu functionality
+function initMobileMenu() {
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const navLinks = document.getElementById('navLinks');
+    
+    if (mobileMenuToggle && navLinks) {
+        mobileMenuToggle.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+            mobileMenuToggle.classList.toggle('active');
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const isClickInsideNav = navLinks.contains(event.target) || mobileMenuToggle.contains(event.target);
+            if (!isClickInsideNav && navLinks.classList.contains('active')) {
+                closeMobileMenu();
+            }
+        });
+        
+        // Close menu on escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && navLinks.classList.contains('active')) {
+                closeMobileMenu();
+            }
+        });
+    }
+}
+
+function closeMobileMenu() {
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const navLinks = document.getElementById('navLinks');
+    
+    if (mobileMenuToggle && navLinks) {
+        navLinks.classList.remove('active');
+        mobileMenuToggle.classList.remove('active');
+    }
+}
+
+// Update the DOMContentLoaded event listener
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Three.js background
+    initThreeJS();
+    
+    // Initialize mobile menu
+    initMobileMenu();
+    
+    // Animate numbers in hero section
+    setTimeout(animateNumbers, 1000);
+    
+    // Initialize scroll animations
+    initScrollAnimations();
+    
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        
+        // Close mobile menu on resize to desktop
+        if (window.innerWidth > 768) {
+            closeMobileMenu();
+        }
+    });
+    
+    // Close mobile menu when scrolling (optional)
+    window.addEventListener('scroll', function() {
+        if (window.innerWidth <= 768) {
+            closeMobileMenu();
+        }
+    });
+});
