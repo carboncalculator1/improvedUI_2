@@ -2119,3 +2119,25 @@ a:focus {
   white-space: nowrap;
   border: 0;
 }
+
+/* ==========================================================================
+   3D Particle System
+   ========================================================================== */
+
+#particle-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Ensure content stays above particles */
+.main-container,
+.partners-section,
+.site-footer {
+  position: relative;
+  z-index: 1;
+}
