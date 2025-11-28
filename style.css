@@ -205,7 +205,8 @@ a:hover {
 }
 
 .container {
-  flex: 1;
+  justify-content: flex-start;
+  flex: center;
   background: var(--glass-bg);
   backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
@@ -625,31 +626,29 @@ select {
 
 /* ESG Button */
 .esg-btn {
-  position: fixed;
-  bottom: var(--space-8);
-  right: var(--space-8);
-  background: linear-gradient(135deg, var(--accent-500), var(--accent-600));
-  color: white;
-  border: none;
-  border-radius: var(--radius-xl);
-  padding: var(--space-4) var(--space-6);
-  font-family: var(--font-sans);
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4);
-  transition: all 0.3s ease;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  max-width: 280px;
-  backdrop-filter: blur(10px);
-}
+            background: linear-gradient(135deg, var(--accent-500), var(--accent-600));
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 30px auto;
+            width: fit-content;
+        }
 
-.esg-btn:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(168, 85, 247, 0.6);
-}
+        .esg-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(168, 85, 247, 0.6);
+        }
 
 /* ==========================================================================
    Tooltip System
@@ -3053,6 +3052,5 @@ a:focus {
         text-align: center;
     }
 }
-
 
 
