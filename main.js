@@ -333,14 +333,27 @@ function initScopeModal() {
         }
     });
     
-    // Make floating scope elements clickable
+    // Make floating scope elements clickable - FIXED VERSION
     document.querySelectorAll('.floating-element').forEach(element => {
         element.style.cursor = 'pointer';
-        element.addEventListener('click', function() {
-            const text = this.textContent || this.innerText;
-            if (text.includes('Scope 1')) showScopeModal(1);
-            else if (text.includes('Scope 2')) showScopeModal(2);
-            else if (text.includes('Scope 3')) showScopeModal(3);
+        
+        // Remove any existing click event listeners first
+        element.replaceWith(element.cloneNode(true));
+        
+        // Get the new reference after clone
+        const newElement = element.parentElement.querySelector('.floating-element[data-scope]') || element;
+        
+        newElement.addEventListener('click', function() {
+            const scopeNumber = this.getAttribute('data-scope');
+            if (scopeNumber) {
+                showScopeModal(parseInt(scopeNumber));
+            } else {
+                // Fallback to text detection if data-scope attribute is missing
+                const text = this.textContent || this.innerText;
+                if (text.includes('Scope 1')) showScopeModal(1);
+                else if (text.includes('Scope 2')) showScopeModal(2);
+                else if (text.includes('Scope 3')) showScopeModal(3);
+            }
         });
     });
 }
