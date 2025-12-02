@@ -3074,6 +3074,10 @@ a:focus {
     padding: var(--space-4);
 }
 
+.scope-modal.show {
+    display: flex; /* Only show when 'show' class is added */
+}
+
 .scope-modal-content {
     background: linear-gradient(145deg, var(--dark-800), var(--dark-900));
     backdrop-filter: blur(20px);
@@ -3238,6 +3242,7 @@ a:focus {
         font-size: 3rem;
     }
 }
+
 
 
 
