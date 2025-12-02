@@ -135,12 +135,22 @@ function showScopeModal(scopeNumber) {
         examplesList.appendChild(li);
     });
     
-    // Set scope-specific class
+    // Set scope-specific class and show modal
     modal.className = `scope-modal show scope-${scopeNumber}`;
-    modal.style.display = 'flex';
     
-    // Add animation
-    modal.style.animation = 'fadeIn 0.3s ease';
+    // Prevent scrolling when modal is open
+    document.body.style.overflow = 'hidden';
+}
+
+function closeScopeModal() {
+    const modal = document.getElementById('scopeModal');
+    if (!modal) return;
+    
+    // Remove the show class
+    modal.className = 'scope-modal';
+    
+    // Re-enable scrolling
+    document.body.style.overflow = 'auto';
 }
 
 function closeScopeModal() {
