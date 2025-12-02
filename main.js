@@ -308,56 +308,6 @@ const scopeData = {
     }
 };
 
-function showScopeModal(scopeNumber) {
-    const scope = scopeData[scopeNumber];
-    const modal = document.getElementById('scopeModal');
-    
-    if (!modal) return;
-    
-    // Update modal content
-    document.getElementById('scopeModalTitle').innerHTML = scope.title;
-    document.getElementById('scopeModalIcon').className = `fas ${scope.icon}`;
-    document.getElementById('scopeModalDescription').innerHTML = scope.description;
-    
-    // Update examples list
-    const examplesList = document.getElementById('scopeModalExamples');
-    examplesList.innerHTML = '';
-    scope.examples.forEach(example => {
-        const li = document.createElement('li');
-        li.textContent = example;
-        examplesList.appendChild(li);
-    });
-    
-    // Set scope-specific class and show modal
-    modal.className = `scope-modal show scope-${scopeNumber}`;
-    
-    // Prevent scrolling when modal is open
-    document.body.style.overflow = 'hidden';
-}
-
-function closeScopeModal() {
-    const modal = document.getElementById('scopeModal');
-    if (!modal) return;
-    
-    // Remove the show class
-    modal.className = 'scope-modal';
-    
-    // Re-enable scrolling
-    document.body.style.overflow = 'auto';
-}
-
-function closeScopeModal() {
-    const modal = document.getElementById('scopeModal');
-    if (!modal) return;
-    
-    modal.className = 'scope-modal';
-    modal.style.animation = 'fadeOut 0.3s ease';
-    
-    setTimeout(() => {
-        modal.style.display = 'none';
-    }, 300);
-}
-
 function initScopeModal() {
     const modal = document.getElementById('scopeModal');
     if (!modal) return;
