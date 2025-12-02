@@ -334,30 +334,37 @@ function initScopeModal() {
     });
     
     // Make floating scope elements clickable - FIXED VERSION
-    document.querySelectorAll('.floating-element').forEach(element => {
+    const floatingElements = document.querySelectorAll('.floating-element');
+    
+    // Only proceed if floating elements exist on this page
+    if (floatingElements.length === 0) return;
+    
+    floatingElements.forEach(element => {
         element.style.cursor = 'pointer';
         
         // Remove any existing click event listeners first
-        element.replaceWith(element.cloneNode(true));
+        const newElement = element.cloneNode(true);
+        element.parentNode.replaceChild(newElement, element);
         
         // Get the new reference after clone
-        const newElement = element.parentElement.querySelector('.floating-element[data-scope]') || element;
+        const currentElement = element.parentElement.querySelector('.floating-element[data-scope]');
         
-        newElement.addEventListener('click', function() {
-            const scopeNumber = this.getAttribute('data-scope');
-            if (scopeNumber) {
-                showScopeModal(parseInt(scopeNumber));
-            } else {
-                // Fallback to text detection if data-scope attribute is missing
-                const text = this.textContent || this.innerText;
-                if (text.includes('Scope 1')) showScopeModal(1);
-                else if (text.includes('Scope 2')) showScopeModal(2);
-                else if (text.includes('Scope 3')) showScopeModal(3);
-            }
-        });
+        if (currentElement) {
+            currentElement.addEventListener('click', function() {
+                const scopeNumber = this.getAttribute('data-scope');
+                if (scopeNumber) {
+                    showScopeModal(parseInt(scopeNumber));
+                } else {
+                    // Fallback to text detection if data-scope attribute is missing
+                    const text = this.textContent || this.innerText;
+                    if (text.includes('Scope 1')) showScopeModal(1);
+                    else if (text.includes('Scope 2')) showScopeModal(2);
+                    else if (text.includes('Scope 3')) showScopeModal(3);
+                }
+            });
+        }
     });
 }
-
 // ==========================================================================
 // Navigation and smooth scrolling
 // ==========================================================================
