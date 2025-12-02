@@ -79,21 +79,28 @@ function animateBackground() {
 // Handle touch events for better mobile UX
 function initMobileTouchSupport() {
     // Add touch feedback for floating elements
-    document.querySelectorAll('.floating-element').forEach(element => {
-        element.addEventListener('touchstart', function() {
-            this.classList.add('touch-active');
-        }, { passive: true });
-        
-        element.addEventListener('touchend', function() {
-            this.classList.remove('touch-active');
-        }, { passive: true });
-        
-        // Prevent long press context menu on mobile
-        element.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            return false;
-        });
+document.querySelectorAll('.floating-element').forEach(element => {
+    // Clone BEFORE replacing
+    const clone = element.cloneNode(true);
+    element.replaceWith(clone);
+
+    clone.style.cursor = "pointer";
+
+    // Add click listener directly to clone
+    clone.addEventListener("click", function () {
+        const scopeNumber = this.getAttribute("data-scope");
+
+        if (scopeNumber) {
+            showScopeModal(parseInt(scopeNumber));
+        } else {
+            const text = this.textContent || this.innerText;
+            if (text.includes("Scope 1")) showScopeModal(1);
+            else if (text.includes("Scope 2")) showScopeModal(2);
+            else if (text.includes("Scope 3")) showScopeModal(3);
+        }
     });
+});
+
     
     // Swipe to close modal on mobile
     let touchStartY = 0;
