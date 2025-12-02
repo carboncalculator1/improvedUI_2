@@ -366,7 +366,7 @@ function animateNumbers() {
     const carbonSaved = document.getElementById('carbonSaved');
     const projects = document.getElementById('projects');
     
-    if (usersCount) animateValue(usersCount, 0, 10000, 2000);
+    if (usersCount) animateValue(usersCount, 0, 1400, 2000);
     if (carbonSaved) animateValue(carbonSaved, 0, 250, 2000);
     if (projects) animateValue(projects, 0, 50, 2000);
 }
