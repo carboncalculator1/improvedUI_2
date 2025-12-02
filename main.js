@@ -73,6 +73,199 @@ function animateBackground() {
 }
 
 // ==========================================================================
+// Mobile-Specific Improvements
+// ==========================================================================
+
+// Handle touch events for better mobile UX
+function initMobileTouchSupport() {
+    // Add touch feedback for floating elements
+    document.querySelectorAll('.floating-element').forEach(element => {
+        element.addEventListener('touchstart', function() {
+            this.classList.add('touch-active');
+        }, { passive: true });
+        
+        element.addEventListener('touchend', function() {
+            this.classList.remove('touch-active');
+        }, { passive: true });
+        
+        // Prevent long press context menu on mobile
+        element.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+    });
+    
+    // Swipe to close modal on mobile
+    let touchStartY = 0;
+    let touchEndY = 0;
+    
+    document.addEventListener('touchstart', function(e) {
+        const modal = document.getElementById('scopeModal');
+        if (modal && modal.classList.contains('show')) {
+            touchStartY = e.changedTouches[0].screenY;
+        }
+    }, { passive: true });
+    
+    document.addEventListener('touchend', function(e) {
+        const modal = document.getElementById('scopeModal');
+        if (modal && modal.classList.contains('show')) {
+            touchEndY = e.changedTouches[0].screenY;
+            
+            // Swipe down to close (minimum 50px swipe)
+            if (touchEndY - touchStartY > 50) {
+                closeScopeModal();
+            }
+        }
+    }, { passive: true });
+    
+    // Prevent modal content from scrolling when swiping to close
+    document.addEventListener('touchmove', function(e) {
+        const modal = document.getElementById('scopeModal');
+        if (modal && modal.classList.contains('show')) {
+            const modalContent = modal.querySelector('.scope-modal-content');
+            if (modalContent) {
+                const isAtTop = modalContent.scrollTop === 0;
+                const isSwipingDown = e.changedTouches[0].screenY > touchStartY;
+                
+                // If at top and swiping down, prevent default to enable swipe-to-close
+                if (isAtTop && isSwipingDown) {
+                    e.preventDefault();
+                }
+            }
+        }
+    }, { passive: false });
+}
+
+// Optimize floating elements for mobile
+function optimizeFloatingElementsForMobile() {
+    const floatingElements = document.querySelectorAll('.floating-element');
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile && floatingElements.length > 0) {
+        // Remove conflicting animations on mobile
+        floatingElements.forEach((element, index) => {
+            element.style.animationDelay = `${index * 0.2}s`;
+            element.style.animationDuration = '4s';
+            
+            // Make sure elements don't overlap
+            element.style.position = 'relative';
+            element.style.margin = '10px';
+        });
+        
+        // Reorder hero section for mobile
+        const heroVisual = document.querySelector('.hero-visual');
+        const heroContent = document.querySelector('.hero-content');
+        
+        if (heroVisual && heroContent) {
+            // Visual comes first on mobile
+            heroVisual.parentNode.insertBefore(heroVisual, heroContent);
+        }
+    }
+}
+
+// Enhanced modal close with vibration feedback (if supported)
+function closeScopeModal() {
+    const modal = document.getElementById('scopeModal');
+    if (!modal) return;
+    
+    // Add haptic feedback on mobile
+    if (navigator.vibrate) {
+        navigator.vibrate(50);
+    }
+    
+    modal.classList.remove('show');
+    document.body.style.overflow = 'auto';
+    
+    // Add closing animation
+    modal.style.animation = 'fadeOut 0.3s ease';
+    
+    setTimeout(() => {
+        modal.style.animation = '';
+    }, 300);
+}
+
+// Improved scope modal show function for mobile
+function showScopeModal(scopeNumber) {
+    const scope = scopeData[scopeNumber];
+    const modal = document.getElementById('scopeModal');
+    const isMobile = window.innerWidth <= 768;
+    
+    if (!modal) return;
+    
+    // Add haptic feedback on mobile
+    if (isMobile && navigator.vibrate) {
+        navigator.vibrate(100);
+    }
+    
+    // Update modal content
+    document.getElementById('scopeModalTitle').innerHTML = scope.title;
+    document.getElementById('scopeModalIcon').className = `fas ${scope.icon}`;
+    document.getElementById('scopeModalDescription').innerHTML = scope.description;
+    
+    // Update examples list
+    const examplesList = document.getElementById('scopeModalExamples');
+    examplesList.innerHTML = '';
+    scope.examples.forEach(example => {
+        const li = document.createElement('li');
+        li.textContent = example;
+        examplesList.appendChild(li);
+    });
+    
+    // Set scope-specific class and show modal
+    modal.className = `scope-modal show scope-${scopeNumber}`;
+    document.body.style.overflow = 'hidden';
+    
+    // Scroll to top of modal on mobile
+    if (isMobile) {
+        setTimeout(() => {
+            const modalContent = modal.querySelector('.scope-modal-content');
+            if (modalContent) {
+                modalContent.scrollTop = 0;
+            }
+        }, 100);
+    }
+}
+
+// Check if device is mobile
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+// Initialize mobile-specific features
+function initMobileFeatures() {
+    if (window.innerWidth <= 768 || isMobileDevice()) {
+        initMobileTouchSupport();
+        optimizeFloatingElementsForMobile();
+        
+        // Add CSS class for mobile-specific styling
+        document.body.classList.add('mobile-device');
+        
+        // Adjust floating elements animation for mobile
+        const style = document.createElement('style');
+        style.textContent = `
+            .mobile-device .floating-element {
+                animation-play-state: running !important;
+            }
+            
+            .mobile-device .hero-visual {
+                order: 1;
+            }
+            
+            .mobile-device .hero-content {
+                order: 2;
+            }
+            
+            /* Better tap targets */
+            .mobile-device .floating-element:active {
+                transform: scale(0.95) !important;
+                transition: transform 0.1s ease !important;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+}
+
+// ==========================================================================
 // Scope Modal Functionality
 // ==========================================================================
 
@@ -436,6 +629,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize scope modal
     initScopeModal();
     
+    // Initialize mobile-specific features
+    initMobileFeatures();
+    
     // Animate numbers in hero section
     setTimeout(animateNumbers, 1000);
     
@@ -451,13 +647,25 @@ document.addEventListener('DOMContentLoaded', function() {
         // Close mobile menu on resize to desktop
         if (window.innerWidth > 768) {
             closeMobileMenu();
+            document.body.classList.remove('mobile-device');
+        } else {
+            initMobileFeatures();
         }
+        
+        // Re-optimize floating elements on resize
+        optimizeFloatingElementsForMobile();
     });
     
-    // Close mobile menu when scrolling (optional)
+    // Close mobile menu when scrolling
     window.addEventListener('scroll', function() {
         if (window.innerWidth <= 768) {
             closeMobileMenu();
         }
+    });
+    
+    // Handle orientation change
+    window.addEventListener('orientationchange', function() {
+        setTimeout(initMobileFeatures, 300);
+        setTimeout(optimizeFloatingElementsForMobile, 300);
     });
 });
