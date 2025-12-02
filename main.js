@@ -340,37 +340,31 @@ function initScopeModal() {
         }
     });
     
-    // Make floating scope elements clickable - FIXED VERSION
-    const floatingElements = document.querySelectorAll('.floating-element');
-    
-    // Only proceed if floating elements exist on this page
-    if (floatingElements.length === 0) return;
-    
-    floatingElements.forEach(element => {
-        element.style.cursor = 'pointer';
-        
-        // Remove any existing click event listeners first
-        const newElement = element.cloneNode(true);
-        element.parentNode.replaceChild(newElement, element);
-        
-        // Get the new reference after clone
-        const currentElement = element.parentElement.querySelector('.floating-element[data-scope]');
-        
-        if (currentElement) {
-            currentElement.addEventListener('click', function() {
-                const scopeNumber = this.getAttribute('data-scope');
-                if (scopeNumber) {
-                    showScopeModal(parseInt(scopeNumber));
-                } else {
-                    // Fallback to text detection if data-scope attribute is missing
-                    const text = this.textContent || this.innerText;
-                    if (text.includes('Scope 1')) showScopeModal(1);
-                    else if (text.includes('Scope 2')) showScopeModal(2);
-                    else if (text.includes('Scope 3')) showScopeModal(3);
-                }
-            });
+// Make floating scope elements clickable (SAFE VERSION)
+document.querySelectorAll('.floating-element').forEach(element => {
+    element.style.cursor = 'pointer';
+
+    // Clone the element BEFORE replacing it
+    const newElement = element.cloneNode(true);
+
+    // Replace old element with the clone
+    element.parentNode.replaceChild(newElement, element);
+
+    // newElement is now the real DOM element — use it directly
+    newElement.addEventListener('click', function () {
+        const scopeNumber = this.getAttribute('data-scope');
+
+        if (scopeNumber) {
+            showScopeModal(parseInt(scopeNumber));
+        } else {
+            const text = this.textContent || this.innerText;
+            if (text.includes('Scope 1')) showScopeModal(1);
+            else if (text.includes('Scope 2')) showScopeModal(2);
+            else if (text.includes('Scope 3')) showScopeModal(3);
         }
     });
+});
+
 }
 // ==========================================================================
 // Navigation and smooth scrolling
