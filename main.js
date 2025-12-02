@@ -72,7 +72,129 @@ function animateBackground() {
     renderer.render(scene, camera);
 }
 
+// ==========================================================================
+// Scope Modal Functionality
+// ==========================================================================
+
+const scopeData = {
+    1: {
+        title: "Scope 1 – Direct Emissions",
+        icon: "fa-fire",
+        description: "Emissions your business creates <strong>directly</strong> — like fuel burned in company cars, generators, or onsite equipment.",
+        examples: [
+            "Company vehicles (cars, trucks, buses)",
+            "Onsite generators and boilers",
+            "Refrigerant leaks from AC systems",
+            "Manufacturing processes",
+            "Agricultural livestock emissions"
+        ]
+    },
+    2: {
+        title: "Scope 2 – Energy Emissions",
+        icon: "fa-bolt",
+        description: "Emissions from the <strong>electricity or energy you buy</strong> — such as the power used in your office or factory.",
+        examples: [
+            "Purchased electricity for offices",
+            "Heating and cooling systems",
+            "Industrial process electricity",
+            "Lighting and equipment power",
+            "Purchased steam or district heating"
+        ]
+    },
+    3: {
+        title: "Scope 3 – Value Chain Emissions",
+        icon: "fa-network-wired",
+        description: "All other <strong>indirect emissions</strong> linked to your operations — including suppliers, transport, waste, business travel, employee commuting, and product use or disposal.",
+        examples: [
+            "Purchased goods and services",
+            "Business travel and employee commuting",
+            "Waste disposal and treatment",
+            "Transportation and distribution",
+            "Use of sold products and end-of-life"
+        ]
+    }
+};
+
+function showScopeModal(scopeNumber) {
+    const scope = scopeData[scopeNumber];
+    const modal = document.getElementById('scopeModal');
+    
+    if (!modal) return;
+    
+    // Update modal content
+    document.getElementById('scopeModalTitle').innerHTML = scope.title;
+    document.getElementById('scopeModalIcon').className = `fas ${scope.icon}`;
+    document.getElementById('scopeModalDescription').innerHTML = scope.description;
+    
+    // Update examples list
+    const examplesList = document.getElementById('scopeModalExamples');
+    examplesList.innerHTML = '';
+    scope.examples.forEach(example => {
+        const li = document.createElement('li');
+        li.textContent = example;
+        examplesList.appendChild(li);
+    });
+    
+    // Set scope-specific class
+    modal.className = `scope-modal show scope-${scopeNumber}`;
+    modal.style.display = 'flex';
+    
+    // Add animation
+    modal.style.animation = 'fadeIn 0.3s ease';
+}
+
+function closeScopeModal() {
+    const modal = document.getElementById('scopeModal');
+    if (!modal) return;
+    
+    modal.className = 'scope-modal';
+    modal.style.animation = 'fadeOut 0.3s ease';
+    
+    setTimeout(() => {
+        modal.style.display = 'none';
+    }, 300);
+}
+
+function initScopeModal() {
+    const modal = document.getElementById('scopeModal');
+    if (!modal) return;
+    
+    const closeBtn = document.querySelector('.scope-close-btn');
+    
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeScopeModal);
+    }
+    
+    // Close modal when clicking outside
+    modal.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            closeScopeModal();
+        }
+    });
+    
+    // Close with Escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && modal.classList.contains('show')) {
+            closeScopeModal();
+        }
+    });
+    
+    // Make floating scope elements clickable
+    document.querySelectorAll('.floating-element').forEach(element => {
+        element.style.cursor = 'pointer';
+        element.addEventListener('click', function() {
+            const text = this.textContent || this.innerText;
+            if (text.includes('Scope 1')) showScopeModal(1);
+            else if (text.includes('Scope 2')) showScopeModal(2);
+            else if (text.includes('Scope 3')) showScopeModal(3);
+        });
+    });
+}
+
+// ==========================================================================
 // Navigation and smooth scrolling
+// ==========================================================================
+
 function scrollToSection(sectionId) {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -91,9 +213,9 @@ function animateNumbers() {
     const carbonSaved = document.getElementById('carbonSaved');
     const projects = document.getElementById('projects');
     
-    animateValue(usersCount, 0, 10000, 2000);
-    animateValue(carbonSaved, 0, 250, 2000);
-    animateValue(projects, 0, 50, 2000);
+    if (usersCount) animateValue(usersCount, 0, 10000, 2000);
+    if (carbonSaved) animateValue(carbonSaved, 0, 250, 2000);
+    if (projects) animateValue(projects, 0, 50, 2000);
 }
 
 function animateValue(element, start, end, duration) {
@@ -125,48 +247,6 @@ function initScrollAnimations() {
         observer.observe(card);
     });
 }
-
-// Initialize everything when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Three.js background
-    initThreeJS();
-    
-    // Animate numbers in hero section
-    setTimeout(animateNumbers, 1000);
-    
-    // Initialize scroll animations
-    initScrollAnimations();
-    
-    // Handle window resize
-    window.addEventListener('resize', function() {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-});
-
-// Add CSS for scroll animations
-const style = document.createElement('style');
-style.textContent = `
-    .feature-card, .team-card, .impact-card {
-        opacity: 0;
-        transform: translateY(30px);
-        transition: all 0.6s ease;
-    }
-    
-    .feature-card.animate-in, 
-    .team-card.animate-in, 
-    .impact-card.animate-in {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    
-    .feature-card:nth-child(1) { transition-delay: 0.1s; }
-    .feature-card:nth-child(2) { transition-delay: 0.2s; }
-    .feature-card:nth-child(3) { transition-delay: 0.3s; }
-    .feature-card:nth-child(4) { transition-delay: 0.4s; }
-`;
-document.head.appendChild(style);
 
 // Mobile menu functionality
 function initMobileMenu() {
@@ -206,13 +286,145 @@ function closeMobileMenu() {
     }
 }
 
-// Update the DOMContentLoaded event listener
+// ==========================================================================
+// Initialize everything when page loads
+// ==========================================================================
+
+// Add CSS for scroll animations and scope modal animations
+const style = document.createElement('style');
+style.textContent = `
+    .feature-card, .team-card, .impact-card {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.6s ease;
+    }
+    
+    .feature-card.animate-in, 
+    .team-card.animate-in, 
+    .impact-card.animate-in {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .feature-card:nth-child(1) { transition-delay: 0.1s; }
+    .feature-card:nth-child(2) { transition-delay: 0.2s; }
+    .feature-card:nth-child(3) { transition-delay: 0.3s; }
+    .feature-card:nth-child(4) { transition-delay: 0.4s; }
+    
+    /* Scope modal animations */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+    }
+    
+    @keyframes slideInUp {
+        from { 
+            opacity: 0; 
+            transform: translateY(50px); 
+        }
+        to { 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+    }
+    
+    .floating-element {
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .floating-element:hover {
+        transform: translateY(-10px) scale(1.1) !important;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
+        z-index: 10;
+    }
+    
+    /* Focus styles for keyboard navigation */
+    .floating-element:focus {
+        outline: 3px solid #10b981;
+        outline-offset: 2px;
+        transform: translateY(-10px) scale(1.1) !important;
+    }
+    
+    /* Mobile menu styles */
+    .mobile-menu-toggle {
+        display: none;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 30px;
+        height: 21px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        z-index: 1001;
+    }
+    
+    .mobile-menu-toggle span {
+        width: 100%;
+        height: 3px;
+        background: var(--primary-400);
+        border-radius: 3px;
+        transition: all 0.3s ease;
+    }
+    
+    .mobile-menu-toggle.active span:nth-child(1) {
+        transform: rotate(45deg) translate(6px, 6px);
+    }
+    
+    .mobile-menu-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+    
+    .mobile-menu-toggle.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px);
+    }
+    
+    @media (max-width: 768px) {
+        .mobile-menu-toggle {
+            display: flex;
+        }
+        
+        .nav-links {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: var(--dark-800);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            flex-direction: column;
+            padding: 2rem;
+            gap: 1.5rem;
+            transform: translateY(-100%);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links.active {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+`;
+document.head.appendChild(style);
+
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize Three.js background
     initThreeJS();
     
     // Initialize mobile menu
     initMobileMenu();
+    
+    // Initialize scope modal
+    initScopeModal();
     
     // Animate numbers in hero section
     setTimeout(animateNumbers, 1000);
