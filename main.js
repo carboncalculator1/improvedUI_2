@@ -177,7 +177,8 @@ function closeScopeModal() {
     document.body.style.overflow = 'auto';
     
     // Add closing animation
-    modal.style.animation = 'fadeOut 0.3s ease';
+    modal.style.animation = '';
+    modal.style.display = '';
     
     setTimeout(() => {
         modal.style.animation = '';
