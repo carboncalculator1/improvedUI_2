@@ -3058,7 +3058,6 @@ a:focus {
    ========================================================================== */
 
 .scope-modal {
-    display: none;
     position: fixed;
     z-index: 2000;
     left: 0;
@@ -3534,6 +3533,7 @@ a:focus {
         box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.5) !important;
     }
 }
+
 
 
 
