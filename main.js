@@ -78,29 +78,6 @@ function animateBackground() {
 
 // Handle touch events for better mobile UX
 function initMobileTouchSupport() {
-    // Add touch feedback for floating elements
-document.querySelectorAll('.floating-element').forEach(element => {
-    // Clone BEFORE replacing
-    const clone = element.cloneNode(true);
-    element.replaceWith(clone);
-
-    clone.style.cursor = "pointer";
-
-    // Add click listener directly to clone
-    clone.addEventListener("click", function () {
-        const scopeNumber = this.getAttribute("data-scope");
-
-        if (scopeNumber) {
-            showScopeModal(parseInt(scopeNumber));
-        } else {
-            const text = this.textContent || this.innerText;
-            if (text.includes("Scope 1")) showScopeModal(1);
-            else if (text.includes("Scope 2")) showScopeModal(2);
-            else if (text.includes("Scope 3")) showScopeModal(3);
-        }
-    });
-});
-
     
     // Swipe to close modal on mobile
     let touchStartY = 0;
@@ -323,6 +300,44 @@ const scopeData = {
         ]
     }
 };
+
+
+// Universal function to handle Floating Element clicks on ALL devices
+function initFloatingElementInteractions() {
+    const elements = document.querySelectorAll('.floating-element');
+    
+    elements.forEach(element => {
+        // Ensure it looks clickable
+        element.style.cursor = 'pointer';
+
+        // Remove old listeners by cloning (prevents double clicks)
+        const newElement = element.cloneNode(true);
+        element.parentNode.replaceChild(newElement, element);
+
+        // Add the click listener
+        newElement.addEventListener('click', function(e) {
+            e.preventDefault(); // Stop page jumping
+            
+            // 1. Try getting scope from data attribute
+            let scopeNumber = this.getAttribute('data-scope');
+
+            // 2. Fallback: Try getting scope from text content (just in case)
+            if (!scopeNumber) {
+                const text = this.textContent || this.innerText;
+                if (text.includes('Scope 1')) scopeNumber = 1;
+                else if (text.includes('Scope 2')) scopeNumber = 2;
+                else if (text.includes('Scope 3')) scopeNumber = 3;
+            }
+
+            // 3. Show the modal
+            if (scopeNumber) {
+                showScopeModal(parseInt(scopeNumber));
+            } else {
+                console.error("No scope number found for this element");
+            }
+        });
+    });
+}
 
 function initScopeModal() {
     const modal = document.getElementById('scopeModal');
@@ -577,6 +592,9 @@ document.head.appendChild(style);
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize Three.js background
     initThreeJS();
+
+    // --- ADD THIS LINE HERE ---
+    initFloatingElementInteractions();
     
     // Initialize mobile menu
     initMobileMenu();
