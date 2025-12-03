@@ -3058,6 +3058,7 @@ a:focus {
    ========================================================================== */
 
 .scope-modal {
+    display: none;
     position: fixed;
     z-index: 2000;
     left: 0;
@@ -3067,7 +3068,6 @@ a:focus {
     background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(10px);
     animation: fadeIn 0.3s ease;
-    display: flex;
     align-items: center;
     justify-content: center;
     padding: var(--space-4);
@@ -3533,6 +3533,7 @@ a:focus {
         box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.5) !important;
     }
 }
+
 
 
 
