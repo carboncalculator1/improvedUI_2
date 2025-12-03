@@ -347,31 +347,6 @@ function initScopeModal() {
             closeScopeModal();
         }
     });
-    
-// Make floating scope elements clickable (SAFE VERSION)
-document.querySelectorAll('.floating-element').forEach(element => {
-    element.style.cursor = 'pointer';
-
-    // Clone the element BEFORE replacing it
-    const newElement = element.cloneNode(true);
-
-    // Replace old element with the clone
-    element.parentNode.replaceChild(newElement, element);
-
-    // newElement is now the real DOM element — use it directly
-    newElement.addEventListener('click', function () {
-        const scopeNumber = this.getAttribute('data-scope');
-
-        if (scopeNumber) {
-            showScopeModal(parseInt(scopeNumber));
-        } else {
-            const text = this.textContent || this.innerText;
-            if (text.includes('Scope 1')) showScopeModal(1);
-            else if (text.includes('Scope 2')) showScopeModal(2);
-            else if (text.includes('Scope 3')) showScopeModal(3);
-        }
-    });
-});
 
 }
 // ==========================================================================
