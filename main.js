@@ -193,6 +193,8 @@ function closeScopeModal() {
 }
 
 // Improved scope modal show function for mobile
+// In main.js
+
 function showScopeModal(scopeNumber) {
     const scope = scopeData[scopeNumber];
     const modal = document.getElementById('scopeModal');
@@ -221,6 +223,12 @@ function showScopeModal(scopeNumber) {
     
     // Set scope-specific class and show modal
     modal.className = `scope-modal show scope-${scopeNumber}`;
+    
+    // --- THIS IS THE FIX ---
+    // Force display flex to override the inline "display: none" from HTML
+    modal.style.display = 'flex'; 
+    // -----------------------
+
     document.body.style.overflow = 'hidden';
     
     // Scroll to top of modal on mobile
