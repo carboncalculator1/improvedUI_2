@@ -1011,6 +1011,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const closeBtn = document.getElementsByClassName('close')[0];
   const appointmentForm = document.getElementById('appointmentForm');
   const snackbar = document.getElementById('snackbar');
+  const toggleBtn = document.querySelector('.toggle-modal-btn');
+  const wasteModal = document.getElementById('wasteModal');
 
   // Open modal when ESG button is clicked
   esgBtn.addEventListener('click', function(e) {
@@ -1075,6 +1077,25 @@ document.addEventListener('DOMContentLoaded', function() {
     snackbar.className = 'show';
     setTimeout(function(){ snackbar.className = snackbar.className.replace('show', ''); }, 3000);
   }
+
+
+    
+// Then check if they exist
+if (toggleBtn && wasteModal) {
+    toggleBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const isVisible = wasteModal.style.display === 'block';
+        wasteModal.style.display = isVisible ? 'none' : 'block';
+    });
+    
+    // Close modal when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!wasteModal.contains(e.target) && !toggleBtn.contains(e.target)) {
+            wasteModal.style.display = 'none';
+        }
+    });
+}
 });
 
 // Combine into one DOMContentLoaded event listener
@@ -1202,10 +1223,23 @@ function smoothlyActivateParticles(sectorName) {
 }
 
 
+function toggleWastePopup() {
+    const popup = document.getElementById('wastePopup');
+    const btn = document.getElementById('wasteSupportBtn');
 
-
-
-
+    if (popup.classList.contains('active')) {
+        // Close it
+        popup.classList.remove('active');
+        btn.textContent = 'Support';
+        btn.style.background = ''; // Return to default CSS styling
+    } else {
+        // Open it
+        popup.classList.add('active');
+        btn.textContent = 'Hide Options';
+        // Optional: darken the main button to indicate it's active
+        btn.style.background = 'var(--dark-600)'; 
+    }
+}
 
 
 
