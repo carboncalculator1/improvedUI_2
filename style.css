@@ -1387,7 +1387,7 @@ select {
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-xl);
   padding: var(--space-8);
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-4);
   box-shadow: var(--shadow-sm);
   transition: all 0.3s ease;
 }
@@ -3794,5 +3794,6 @@ a:focus {
     color: white;
     border-color: var(--error-500);
 }
+
 
 
