@@ -404,15 +404,46 @@ select {
   background-repeat: no-repeat;
   background-size: 16px;
   padding-right: var(--space-10);
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
 }
+
 
 .meal-type-select,
 .waste-type-select {
-  background: var(--glass-bg);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--glass-border);
-  font-size: var(--font-size-base);
-  font-weight: 500;
+  /* Set a dark, glass-like background */
+  background: var(--glass-bg); /* Use your defined glass background variable */
+  backdrop-filter: blur(10px); /* For a glass effect */
+  
+  /* Set text color for the select box itself */
+  color: var(--dark-100); 
+
+  /* Remove default border and potentially add a custom one */
+  border: 1px solid var(--glass-border); 
+  
+  /* Add padding for better look */
+  padding: var(--space-3);
+  
+  /* Ensure the font is consistent */
+  font-family: inherit;
+  
+  /* A trick to remove the default arrow on some browsers (like IE/Edge) */
+  -moz-appearance: none; 
+  -webkit-appearance: none; 
+  appearance: none;
+}
+
+/* To style the options within the dropdown (limited browser support for background) */
+.waste-type-select option{
+    /* This *may* apply to the options in some browsers, but often fails for the dropdown menu */
+    background-color: var(--dark-900); /* A dark color for the options */
+    color: var(--dark-100); /* White or light text color */
+}
+
+.meal-type-select option {
+    /* This *may* apply to the options in some browsers, but often fails for the dropdown menu */
+    background-color: var(--dark-900); /* A dark color for the options */
+    color: var(--dark-100); /* White or light text color */
 }
 
 /* ==========================================================================
@@ -913,7 +944,7 @@ select {
 
 .offset-btn {
   display: inline-block;
-  background: linear-gradient(135deg, var(--secondary-500), var(--secondary-600));
+  background: linear-gradient(135deg, #4ade80, #22c55e);
   color: white;
   padding: var(--space-3) var(--space-5);
   border-radius: var(--radius-lg);
@@ -973,7 +1004,7 @@ select {
   background: var(--glass-bg);
   backdrop-filter: blur(10px);
   padding: var(--space-6);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-x1);
   border: 1px solid var(--glass-border);
   min-width: 200px;
   transition: all 0.3s ease;
@@ -986,13 +1017,13 @@ select {
 }
 
 .partner img {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: var(--space-3);
-  border: 3px solid var(--glass-border);
+  width: 100%;
+  height: 100px;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-bottom: 10px;
 }
+
 
 .partner p {
   font-weight: 600;
@@ -1253,6 +1284,21 @@ select {
   background: linear-gradient(135deg, var(--secondary-400), var(--secondary-500));
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+}
+
+.logout-button {
+  background: linear-gradient(135deg, var(--danger-500), var(--danger-600));
+  color: white;
+  border: none;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-lg);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
 }
 
 /* ==========================================================================
@@ -2424,6 +2470,14 @@ a:focus {
     margin-bottom: 3rem;
 }
 
+.scope-description {
+    justify-content: flex-end;
+    font-size: 1.25rem;
+    color: var(--dark-300);
+    margin-bottom: 3rem;
+    line-height: 1.6;
+}
+
 .stat {
     text-align: center;
 }
@@ -2533,6 +2587,70 @@ a:focus {
     animation-delay: 3s;
 }
 
+
+
+.scope-hint {
+    /* Positioning relative to the floating element */
+    position: absolute;
+    top: 50%;
+    left: calc(100% + var(--space-4)); /* Offset to the right by a small margin */
+    transform: translateY(-50%) scale(0.9); /* Center vertically and start slightly smaller */
+    
+    /* Layout and Look (Smaller than modal, using glass theme) */
+    width: 400px; /* Adjust size as needed, this is small */
+    max-width: 80vh;
+    height: 200px;
+    max-height: 80vh;
+    z-index: 50; 
+    
+    /* Glass Effect */
+    background: var(--glass-bg); /* Use your existing glass variables */
+    backdrop-filter: blur(20px); 
+    border: 1px solid var(--glass-border); 
+    border-radius: var(--radius-lg); 
+    padding: var(--space-4); 
+    box-shadow: var(--shadow-md); /* Slightly less intense shadow than the modal */
+    
+    /* Hidden by default with smooth transition */
+    opacity: 0;
+    pointer-events: none; /* Allows clicks to pass through to the floating element below */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.scope-hint.show-hint {
+    opacity: 1;
+    transform: translateY(-50%) scale(1); /* Full size and visible */
+}
+
+/* Styling the content inside the hint */
+.scope-hint .hint-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-2);
+    font-weight: 700;
+    color: var(--primary-300); 
+    font-size: var(--font-size-sm); /* Smaller title font */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.scope-hint .hint-header i {
+    font-size: var(--font-size-base);
+}
+
+.scope-hint .hint-body {
+    font-size: 1rem; /* Smallest text size */
+    line-height: 1.5;
+    color: var(--dark-200);
+    margin: 0;
+    /* Use clamp to limit the height, mimicking a short hint */
+    display: -webkit-box;
+    -webkit-line-clamp: 8; /* Limit to 8 lines of text */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
 @keyframes float {
     0%, 100% { transform: translateY(0px) rotate(0deg); }
     50% { transform: translateY(-20px) rotate(5deg); }
@@ -2570,7 +2688,7 @@ a:focus {
 .features-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
+    gap: 0.3rem;
 }
 
 .feature-card {
@@ -2578,7 +2696,8 @@ a:focus {
     backdrop-filter: blur(20px);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-xl);
-    padding: 3rem 2rem;
+    /* Reduced padding to make the card smaller */
+    padding: 0.1rem 0.1rem;
     text-align: center;
     transition: all 0.3s ease;
 }
@@ -2590,8 +2709,8 @@ a:focus {
 }
 
 .feature-icon {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
     border-radius: 50%;
     display: flex;
@@ -2798,16 +2917,16 @@ a:focus {
 
 .team-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.5rem;
 }
 
 .team-card {
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
+    border: 0.5px solid var(--glass-border);
     border-radius: var(--radius-xl);
-    padding: 3rem 2rem;
+    padding: 0.5rem 0.2rem;
     text-align: center;
     transition: all 0.3s ease;
 }
@@ -2818,8 +2937,8 @@ a:focus {
 }
 
 .team-avatar {
-    width: 100px;
-    height: 100px;
+    width: 50px;
+    height: 50px;
     background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
     border-radius: 50%;
     display: flex;
@@ -2831,20 +2950,20 @@ a:focus {
 }
 
 .team-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
     color: var(--dark-100);
 }
 
 .team-role {
     color: var(--primary-400);
     font-weight: 600;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .team-bio {
     color: var(--dark-300);
-    line-height: 1.6;
+    line-height: 0.8;
 }
 
 /* CTA Section */
@@ -3023,6 +3142,10 @@ a:focus {
         gap: 1rem;
     }
 
+    .scope-hint {
+        display: none;
+    }
+
     .hero {
         flex-direction: column;
         text-align: center;
@@ -3065,7 +3188,6 @@ a:focus {
     top: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(10px);
     animation: fadeIn 0.3s ease;
     align-items: center;
@@ -3083,7 +3205,10 @@ a:focus {
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-2xl);
     width: 100%;
-    max-width: 500px;
+    max-width: 100vh;
+    max-height: 100vh; /* Limits the height to 80% of the viewport height */
+    overflow-y: auto; /* Allows scrolling if content exceeds max-height */
+    overflow-x: auto;
     box-shadow: var(--shadow-xl);
     overflow: hidden;
     animation: slideInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -3123,8 +3248,8 @@ a:focus {
     font-size: var(--font-size-3xl);
     font-weight: bold;
     cursor: pointer;
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -3534,8 +3659,140 @@ a:focus {
     }
 }
 
+/* Add to style.css */
+.waste-management-modal {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    margin-top: var(--space-2);
+    z-index: 1000;
+    box-shadow: var(--shadow-xl);
+    animation: fadeIn 0.3s ease;
+}
 
+.waste-management-options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
 
+.option-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: var(--dark-100);
+    transition: all 0.3s ease;
+}
 
+.option-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(5px);
+}
+
+.option-link i {
+    width: 20px;
+    text-align: center;
+}
+
+.summary-actions {
+    /* Enables flexbox for arranging items */
+    display: flex;
+    /* Adds space between the buttons (use var(--space-3) or var(--space-4) for more space) */
+    gap: var(--space-3);
+    /* Allows buttons to wrap to the next line on small screens */
+    flex-wrap: wrap; 
+    /* Centers the button group on the page (optional) */
+    justify-content: center;
+    /* Adds a little space above the entire button group (optional) */
+    margin-top: var(--space-4);
+}
+
+/* ==========================================================================
+   Mini Popup Styles (Eco Waste Management)
+   ========================================================================== */
+
+.mini-popup {
+    display: none; /* Hidden by default */
+    margin-top: var(--space-4);
+    padding: var(--space-4);
+    background: rgba(0, 0, 0, 0.4); /* Slightly darker glass */
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--glass-border);
+    animation: fadeIn 0.3s ease;
+}
+
+.mini-popup.active {
+    display: block;
+}
+
+.popup-title {
+    font-size: var(--font-size-sm);
+    color: var(--primary-300);
+    margin-bottom: var(--space-3);
+    font-weight: 600;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: var(--space-2);
+}
+
+.popup-option {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    background: rgba(255, 255, 255, 0.05);
+    margin-bottom: var(--space-2);
+    border-radius: var(--radius-md);
+    color: var(--dark-100);
+    font-size: var(--font-size-sm);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.popup-option:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--primary-400);
+    transform: translateX(5px);
+    color: white;
+}
+
+.popup-option i {
+    color: var(--primary-400);
+    width: 20px;
+    text-align: center;
+}
+
+.popup-close-btn {
+    width: 100%;
+    margin-top: var(--space-2);
+    background: transparent;
+    border: 1px solid var(--glass-border);
+    color: var(--dark-300);
+    padding: var(--space-2);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: var(--font-size-xs);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+}
+
+.popup-close-btn:hover {
+    background: rgba(239, 68, 68, 0.2); /* Red tint on hover */
+    color: white;
+    border-color: var(--error-500);
+}
 
 
