@@ -173,52 +173,25 @@ function closeScopeModal() {
 // In main.js
 
 function showScopeModal(scopeNumber) {
-    const scope = scopeData[scopeNumber];
+    const data = SCOPE_DATA[scopeNumber]; // Use the new centralized data
+    if (!data) return;
+
     const modal = document.getElementById('scopeModal');
-    const isMobile = window.innerWidth <= 768;
+    document.getElementById('scopeModalTitle').textContent = data.title;
+    document.getElementById('scopeModalIcon').className = data.icon;
+    document.getElementById('scopeModalDescription').innerHTML = `<p>${data.description}</p>`;
     
-    if (!modal) return;
-    
-    // Add haptic feedback on mobile
-    if (isMobile && navigator.vibrate) {
-        navigator.vibrate(100);
-    }
-    
-    // Update modal content
-    document.getElementById('scopeModalTitle').innerHTML = scope.title;
-    document.getElementById('scopeModalIcon').className = `fas ${scope.icon}`;
-    document.getElementById('scopeModalDescription').innerHTML = scope.description;
-    
-    // Update examples list
     const examplesList = document.getElementById('scopeModalExamples');
-    examplesList.innerHTML = '';
-    scope.examples.forEach(example => {
+    examplesList.innerHTML = ''; 
+    data.examples.forEach(example => {
         const li = document.createElement('li');
         li.textContent = example;
         examplesList.appendChild(li);
     });
-    
-    // Set scope-specific class and show modal
-    modal.className = `scope-modal show scope-${scopeNumber}`;
-    
-    // --- THIS IS THE FIX ---
-    // Force display flex to override the inline "display: none" from HTML
-    modal.style.display = 'flex'; 
-    // -----------------------
 
-    document.body.style.overflow = 'hidden';
-    
-    // Scroll to top of modal on mobile
-    if (isMobile) {
-        setTimeout(() => {
-            const modalContent = modal.querySelector('.scope-modal-content');
-            if (modalContent) {
-                modalContent.scrollTop = 0;
-            }
-        }, 100);
-    }
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden'; 
 }
-
 // Check if device is mobile
 function isMobileDevice() {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -304,38 +277,40 @@ const scopeData = {
 
 // Universal function to handle Floating Element clicks on ALL devices
 function initFloatingElementInteractions() {
-    const elements = document.querySelectorAll('.floating-element');
-    
-    elements.forEach(element => {
-        // Ensure it looks clickable
-        element.style.cursor = 'pointer';
+    const floatingElements = document.querySelectorAll('.floating-element');
 
-        // Remove old listeners by cloning (prevents double clicks)
-        const newElement = element.cloneNode(true);
-        element.parentNode.replaceChild(newElement, element);
-
-        // Add the click listener
-        newElement.addEventListener('click', function(e) {
-            e.preventDefault(); // Stop page jumping
-            
-            // 1. Try getting scope from data attribute
-            let scopeNumber = this.getAttribute('data-scope');
-
-            // 2. Fallback: Try getting scope from text content (just in case)
-            if (!scopeNumber) {
-                const text = this.textContent || this.innerText;
-                if (text.includes('Scope 1')) scopeNumber = 1;
-                else if (text.includes('Scope 2')) scopeNumber = 2;
-                else if (text.includes('Scope 3')) scopeNumber = 3;
-            }
-
-            // 3. Show the modal
-            if (scopeNumber) {
+    floatingElements.forEach(element => {
+        const scopeNumber = element.getAttribute('data-scope');
+        
+        if (scopeNumber) {
+            // 1. Existing Click to show full modal (Kept)
+            element.addEventListener('click', function() {
                 showScopeModal(parseInt(scopeNumber));
-            } else {
-                console.error("No scope number found for this element");
-            }
-        });
+            });
+            
+            // 2. NEW: Mouseover/Mouseout for hint/tooltip
+            const hintElement = element.querySelector('.scope-hint'); 
+            const data = SCOPE_DATA[scopeNumber]; // Get data once
+
+            // Mouseover (Show Hint)
+            element.addEventListener('mouseover', function() {
+                if (hintElement && data) {
+                    hintElement.querySelector('.hint-body').textContent = data.hint; 
+                    hintElement.querySelector('.hint-header i').className = data.icon;
+                    hintElement.classList.add('show-hint');
+                }
+            });
+
+            // Mouseout (Hide Hint)
+            element.addEventListener('mouseout', function() {
+                if (hintElement) {
+                    hintElement.classList.remove('show-hint');
+                }
+            });
+            
+        } else {
+            console.error("No scope number found for this element");
+        }
     });
 }
 
@@ -458,6 +433,52 @@ function closeMobileMenu() {
         mobileMenuToggle.classList.remove('active');
     }
 }
+
+// ==========================================================================
+// SCOPE DATA DEFINITION (ADD THIS NEW CONSTANT)
+// ==========================================================================
+const SCOPE_DATA = {
+    1: {
+        title: "Scope 1 Emissions",
+        icon: "fas fa-fire", // Direct emissions
+        // The specific hint text requested by the user:
+        hint: "Emissions your business creates directly, like fuel burned in company cars, generators, or onsite equipment. E.g: Company vehicles (cars, trucks, buses), Onsite generators and boilers, Refrigerant leaks from AC systems, Manufacturing processes, Agricultural livestock emissions",
+        description: "Direct emissions from sources that are owned or controlled by your company. These emissions are a direct result of your operations.",
+        examples: [
+            "Company vehicles (cars, trucks, buses) burning fuel.",
+            "Onsite generators and boilers burning fuel.",
+            "Refrigerant leaks from AC systems and industrial cooling.",
+            "Manufacturing processes that release GHGs (e.g., cement production).",
+            "Agricultural livestock emissions (e.g., methane from enteric fermentation)."
+        ]
+    },
+    2: {
+        title: "Scope 2 Emissions",
+        icon: "fas fa-plug", // Indirect, from purchased energy
+        hint: "Indirect emissions from the generation of purchased or acquired electricity, steam, heating, and cooling consumed by your company. E.g: Electricity from the national grid, Purchased steam for heating, Chilled water for cooling",
+        description: "Indirect emissions from the generation of purchased or acquired electricity, steam, heating, and cooling consumed by your company. These are emissions created at a power plant or utility supplier.",
+        examples: [
+            "Electricity purchased from the national grid (ZESCO).",
+            "Purchased steam for industrial or building heating.",
+            "Purchased chilled water for cooling systems."
+        ]
+    },
+    3: {
+        title: "Scope 3 Emissions",
+        icon: "fas fa-globe", // All other indirect emissions
+        hint: "All other indirect emissions that occur in your company’s value chain, both upstream and downstream. E.g: Business travel (flights, trains), Employee commuting, Purchased goods and services, Waste disposal, Water consumption",
+        description: "All other indirect emissions that occur in your company’s value chain. They are often the largest source of emissions and are the most challenging to track.",
+        examples: [
+            "Business travel (flights, train, taxi).",
+            "Employee commuting to and from work.",
+            "Emissions from purchased goods and services.",
+            "Waste disposal (landfilled waste).",
+            "Upstream and downstream logistics and transportation.",
+            "Water consumption and wastewater treatment."
+        ]
+    }
+};
+
 
 // ==========================================================================
 // Initialize everything when page loads
