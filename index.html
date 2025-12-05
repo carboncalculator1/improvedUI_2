@@ -722,10 +722,16 @@
             <div class="total-emissions" id="totalEmissions">Total Emissions: 333.0 kg CO₂e/month</div>
             <div class="daily-average" id="dailyAverage">Daily Average: 10.9 kg CO₂e/day</div>
 
-		<!-- PDF button -->
+<div class="summary-actions">
+            <!-- PDF button -->
 		<button class="calculate-btn" onclick="exportToPDF()">
     		<i class="fas fa-file-pdf"></i> Export Summary as PDF
 		</button>
+
+		<!-- Carbon Credit button -->
+		<a href="https://wa.me/message/3LK5EQBMK64KL1" class="calculate-btn">
+            <i class="fa-solid fa-circle-plus"></i> Create Carbon Credit
+        </a>
 
 		<!-- Back to Dashboard button -->
 		<button onclick="goToDashboard()" class="calculate-btn">
@@ -735,9 +741,8 @@
 		<!-- Back button -->
     		<button onclick="window.location.href='index.html'" class="calculate-btn">
         		<i class="fas fa-arrow-left"></i> Back to Calculator</button>
-
-
-        </div>
+</div>
+</div>
 
 <button class="esg-btn" aria-label="Schedule ESG consultancy Appointment" id="esgBtn">
   <i class="fas fa-calendar" aria-hidden="true"></i>
@@ -761,20 +766,35 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
     // Check auth status
-    auth.onAuthStateChanged((user) => {
-        const userStatus = document.getElementById('userStatus');
-        const authButton = document.getElementById('authButton');
+auth.onAuthStateChanged((user) => {
+    const userStatus = document.getElementById('userStatus');
+    const authButton = document.getElementById('authButton');
+    
+    if (user) {
+        // --- User is Logged In (Logout State) ---
+        userStatus.textContent = `Logged in as ${user.email}`;
+        authButton.textContent = 'Logout';
+        authButton.onclick = () => auth.signOut();
+
+        // 1. Add the red/danger style class
+        authButton.classList.add('logout-button');
         
-        if (user) {
-            userStatus.textContent = `Logged in as ${user.email}`;
-            authButton.textContent = 'Logout';
-            authButton.onclick = () => auth.signOut();
-        } else {
-            userStatus.textContent = 'Not logged in';
-            authButton.textContent = 'Login';
-            authButton.onclick = () => window.location.href = 'login.html';
-        }
-    });
+        // 2. Remove the default style class
+        authButton.classList.remove('auth-button'); 
+        
+    } else {
+        // --- User is Logged Out (Login State) ---
+        userStatus.textContent = 'Not logged in';
+        authButton.textContent = 'Login';
+        authButton.onclick = () => window.location.href = 'login.html';
+
+        // 1. Add the default style class
+        authButton.classList.add('auth-button');
+        
+        // 2. Remove the red/danger style class
+        authButton.classList.remove('logout-button');
+    }
+});
     
     function goToDashboard() {
         if (auth.currentUser) {
@@ -795,10 +815,31 @@
             <p>Support local reforestation projects. One tree offsets approximately 25kg of CO2 annually.</p>
             <a href="https://www.facebook.com/share/p/16fVrQh3vP/" class="offset-btn">Plant Now</a>
         </div>
-        <div class="offset-option">
+<div class="offset-option" id="waste-offset-container">
             <h3><i class="fas fa-recycle"></i> Eco Waste Management</h3>
             <p>Fund innovative recycling programs and waste reduction initiatives.</p>
-            <a href="https://www.facebook.com/share/p/19ZKjJYUWH/" class="offset-btn">Support</a>
+            
+            <button onclick="toggleWastePopup()" class="offset-btn" id="wasteSupportBtn" style="width: auto; border:none; cursor:pointer; font-family:inherit; font-size: var(--font-size-sm);">
+                Support
+            </button>
+
+            <div id="wastePopup" class="mini-popup">
+                <p class="popup-title">Select a Partner:</p>
+                
+                <a href="https://www.facebook.com/etechrecycling" target="_blank" class="popup-option">
+                    <i class="fas fa-microchip"></i> 
+                    <span>E-tech Recycling</span>
+                </a>
+                
+                <a href="https://www.linkedin.com/company/yaaka-investments-limited/" target="_blank" class="popup-option">
+                    <i class="fas fa-leaf"></i> 
+                    <span>Yaaka Investments Ltd</span>
+                </a>
+
+                <button class="popup-close-btn" onclick="toggleWastePopup()">
+                    <i class="fas fa-times"></i> Close
+                </button>
+            </div>
         </div>
         <div class="offset-option">
             <h3><i class="fas fa-building"></i> Green Building/Renewable energy Project</h3>
@@ -855,10 +896,6 @@
   </div>
 </footer>
 
-
-
-<script src="app.js"></script>
-
 		<!-- ESG Modal -->
 <div id="esgModal" class="modal">
   <div class="modal-content">
@@ -900,6 +937,9 @@
 
 <!-- Snackbar -->
 <div id="snackbar">Appointment Requested Successfully</div>
+
+
+<script src="app.js"></script>
 
 </body>
 </html>
