@@ -260,6 +260,8 @@ a:hover {
   backdrop-filter: blur(10px);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-xl);
+  position: relative;
+  z-index: 5;
 }
 
 .nav-btn {
@@ -857,6 +859,14 @@ select {
   text-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
 }
 
+.results-comments {
+  text-align: center;
+  font-size: var(--font-size-l);
+  font-weight: 600;
+  color: var(--dark-200);
+  margin-bottom: var(--space-8);
+}
+
 .daily-average {
   text-align: center;
   font-size: var(--font-size-xl);
@@ -1263,6 +1273,7 @@ select {
   backdrop-filter: blur(10px);
   border-radius: var(--radius-xl);
   border: 1px solid var(--glass-border);
+  z-index: 1000;
 }
 
 .auth-button {
@@ -1878,6 +1889,8 @@ tbody tr:hover {
   
   .nav-tabs {
     flex-wrap: wrap;
+    position: relative; 
+    z-index: 5;
   }
   
   .nav-btn {
@@ -1931,8 +1944,180 @@ tbody tr:hover {
   .nav-tabs {
     flex-direction: column;
     gap: var(--space-2);
+      position: relative; 
+    /* Set a lower z-index than the dropdown's container (2000) */
+  z-index: 10;
   }
-  
+
+  /* Mission Section */
+.mission-section {
+    /* Reduced padding from 6rem 0 to 3rem 0 */
+    padding: 3rem 0;
+}
+
+.mission-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* Reduced gap from 4rem to 2rem */
+    gap: 2rem;
+    align-items: center;
+}
+
+.mission-text h2 {
+    /* Reduced font-size from 2.5rem to 1.25rem */
+    font-size: 1.25rem;
+    /* Reduced margin-bottom from 1.5rem to 0.75rem */
+    margin-bottom: 0.75rem;
+    color: var(--dark-50);
+}
+
+.mission-text p {
+    /* Reduced font-size from 1.125rem to 0.5625rem (approx. 0.6rem) */
+    font-size: 0.6rem; 
+    color: var(--dark-300);
+    /* line-height kept the same for readability, but reduced slightly */
+    line-height: 1.5; 
+    /* Reduced margin-bottom from 2rem to 1rem */
+    margin-bottom: 1rem;
+}
+
+.mission-stats {
+    display: flex;
+    /* Reduced gap from 3rem to 1.5rem */
+    gap: 1.5rem;
+}
+
+.mission-stat {
+    text-align: center;
+}
+
+.mission-number {
+    /* Reduced font-size from 2rem to 1rem */
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--primary-400);
+    /* Reduced margin-bottom from 0.5rem to 0.25rem */
+    margin-bottom: 0.25rem;
+}
+
+.mission-label {
+    color: var(--dark-400);
+    /* Reduced font-size from 0.875rem to 0.4375rem (approx. 0.45rem) */
+    font-size: 0.45rem;
+}
+
+.mission-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.earth-visual {
+    /* Reduced width from 200px to 100px */
+    width: 100px;
+    /* Reduced height from 200px to 100px */
+    height: 100px;
+    background: linear-gradient(135deg, var(--secondary-500), var(--secondary-600));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Reduced font-size from 4rem to 2rem */
+    font-size: 2rem;
+    color: white;
+    /* Animation speed kept the same for consistent visual effect */
+    animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+  .emissions-category {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  text-align: center;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+  /* --- New Styles to Reduce Size --- */
+  width: 150px; /* Example: set to half of an assumed 300px original width */
+  height: 100px; /* Example: set to half of an assumed 200px original height */
+}
+
+
+.category-name {
+  font-weight: 600;
+  color: var(--dark-300);
+  /* Reduced from var(--space-2) to var(--space-1) */
+  margin-bottom: var(--space-1);
+  /* Reduced from var(--font-size-sm) to var(--font-size-xs) (assuming a smaller variable) */
+  font-size: var(--font-size-xs); 
+  text-transform: uppercase;
+  /* Reduced from 0.5px to 0.25px */
+  letter-spacing: 0.25px;
+}
+
+.category-value {
+  /* Reduced from var(--font-size-2xl) to var(--font-size-xl) (or even L) */
+  font-size: var(--font-size-l);
+  font-weight: 800;
+  color: var(--primary-300);
+  /* Reduced from var(--space-2) to var(--space-1) */
+  margin-bottom: var(--space-1);
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+}
+
+.category-percentage {
+  /* Reduced from var(--font-size-sm) to var(--font-size-xs) */
+  font-size: var(--font-size-xs);
+  color: var(--dark-400);
+  font-style: italic;
+}
+
+.total-emissions {
+  text-align: center;
+  /* Reduced from var(--font-size-3xl) to var(--font-size-xl) */
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  color: var(--error-400);
+  /* Reduced from var(--space-4) to var(--space-2) */
+  margin-bottom: var(--space-2);
+  /* Reduced from var(--space-6) to var(--space-3) */
+  padding: var(--space-3);
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  /* Keep border-radius/blur the same unless you want to change the corner size */
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  /* Reduced text-shadow blur from 15px to 8px */
+  text-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+}
+
+.results-comments {
+  text-align: center;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--dark-200);
+  margin-bottom: var(--space-8);
+}
+
+.daily-average {
+  text-align: center;
+  /* Reduced from var(--font-size-xl) to var(--font-size-base) (or 'lg') */
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--dark-200);
+  /* Reduced from var(--space-8) to var(--space-4) */
+  margin-bottom: var(--space-4);
+}
+
+
+ 
   .nav-btn {
     min-width: auto;
     width: 100%;
@@ -3174,7 +3359,96 @@ a:focus {
         gap: 1rem;
         text-align: center;
     }
+
+    /* Quote Section */
+.quote-section {
+    /* Reduced padding from 6rem 0 to 3rem 0 */
+    padding: 3rem 0;
 }
+
+.quote-card {
+    background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
+    /* Keep border-radius same or reduce from var(--radius-2xl) to var(--radius-xl) */
+    border-radius: var(--radius-xl); 
+    /* Reduced padding from 4rem to 2rem */
+    padding: 2rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.quote-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* Grid background kept the same, as changing the pattern size in data URI is complex and may not be necessary */
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+}
+
+.quote-content {
+    position: relative;
+    z-index: 1;
+}
+
+.quote-icon {
+    /* Reduced font-size from 3rem to 1.5rem */
+    font-size: 1.5rem;
+    /* Reduced margin-bottom from 2rem to 1rem */
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.quote-card blockquote {
+    /* Reduced font-size from 1.5rem to 0.75rem */
+    font-size: 0.75rem; 
+    /* line-height kept the same for readability, but could be reduced slightly */
+    line-height: 1.5; 
+    /* Reduced margin-bottom from 2rem to 1rem */
+    margin-bottom: 1rem;
+    font-style: italic;
+}
+
+.quote-author {
+    display: flex;
+    align-items: center;
+    /* Reduced gap from 1rem to 0.5rem */
+    gap: 0.5rem;
+}
+
+.author-avatar {
+    /* Reduced width from 60px to 30px */
+    width: 30px; 
+    /* Reduced height from 60px to 30px */
+    height: 30px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Reduced font-size from 1.5rem to 0.75rem */
+    font-size: 0.75rem;
+}
+
+.author-name {
+    font-weight: 700;
+    /* Reduced font-size from 1.25rem to 0.625rem */
+    font-size: 0.625rem; 
+}
+
+.author-title {
+    opacity: 0.8;
+    /* Reduced font-size from 0.875rem to 0.4375rem */
+    font-size: 0.4375rem;
+}
+
+
+
+}
+
+
 
 /* ==========================================================================
    Scope Modal Styles
@@ -3379,6 +3653,365 @@ a:focus {
         margin-top: 3rem;
         order: -1; /* Move above content on mobile */
     }
+
+
+    /* CTA Section */
+.cta-section {
+    /* Reduced padding from 6rem 0 to 3rem 0 */
+    padding: 3rem 0;
+    background: linear-gradient(135deg, var(--primary-700), var(--primary-800));
+    color: white;
+    text-align: center;
+}
+
+.cta-content h2 {
+    /* Reduced font-size from 3rem to 1.5rem */
+    font-size: 1.5rem;
+    /* Reduced margin-bottom from 1rem to 0.5rem */
+    margin-bottom: 0.5rem;
+    color: white;
+}
+
+.cta-content p {
+    /* Reduced font-size from 1.25rem to 0.625rem */
+    font-size: 0.625rem;
+    /* Reduced margin-bottom from 3rem to 1.5rem */
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+}
+
+.cta-button-large {
+    background: white;
+    color: var(--primary-600);
+    border: none;
+    /* Reduced padding from 1.25rem 3rem to 0.6rem 1.5rem */
+    padding: 0.6rem 1.5rem;
+    /* Reduced radius from var(--radius-xl) to var(--radius-lg) */
+    border-radius: var(--radius-lg);
+    /* Reduced font-size from 1.25rem to 0.625rem */
+    font-size: 0.625rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    /* Reduced gap from 0.75rem to 0.375rem */
+    gap: 0.375rem;
+    /* Reduced margin-bottom from 3rem to 1.5rem */
+    margin-bottom: 1.5rem;
+}
+
+.cta-button-large:hover {
+    /* Reduced transform offset from -3px to -1.5px */
+    transform: translateY(-1.5px);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3); /* Halved the vertical offset and blur of the shadow */
+}
+
+.cta-features {
+    display: flex;
+    justify-content: center;
+    /* Reduced gap from 2rem to 1rem */
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.cta-feature {
+    display: flex;
+    align-items: center;
+    /* Reduced gap from 0.5rem to 0.25rem */
+    gap: 0.25rem;
+    font-weight: 500;
+    /* Explicitly setting font size to be smaller */
+    font-size: 0.5rem;
+}
+
+.cta-feature i {
+    color: var(--primary-300);
+    /* Explicitly setting icon size to be smaller */
+    font-size: 0.6rem;
+}
+
+
+    /* Team Section */
+.team-section {
+    /* Reduced padding from 6rem 0 to 3rem 0 */
+    padding: 3rem 0;
+}
+
+.team-grid {
+    display: grid;
+    /* Reduced minmax from 200px to 100px */
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    /* Reduced gap from 0.5rem to 0.25rem */
+    gap: 0.25rem;
+}
+
+.team-card {
+    background: var(--glass-bg);
+    /* Blur kept the same for visual quality */
+    backdrop-filter: blur(20px);
+    /* Border width kept the same (0.5px) as halving it might make it invisible */
+    border: 0.5px solid var(--glass-border);
+    /* Reduced radius from var(--radius-xl) to var(--radius-lg) */
+    border-radius: var(--radius-lg);
+    /* Reduced padding from 0.5rem 0.2rem to 0.25rem 0.1rem */
+    padding: 0.25rem 0.1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.team-card:hover {
+    /* Reduced transform offset from -5px to -2px */
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-xl);
+}
+
+.team-avatar {
+    /* Reduced width from 50px to 25px */
+    width: 25px;
+    /* Reduced height from 50px to 25px */
+    height: 25px;
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Reduced margin-bottom from 1.5rem to 0.75rem */
+    margin: 0 auto 0.75rem;
+    /* Reduced font-size from 2.5rem to 1.25rem */
+    font-size: 1.25rem;
+    color: white;
+}
+
+.team-card h3 {
+    /* Reduced font-size from 1rem to 0.5rem */
+    font-size: 0.5rem;
+    /* Reduced margin-bottom from 0.25rem to 0.125rem */
+    margin-bottom: 0.125rem;
+    color: var(--dark-100);
+}
+
+.team-role {
+    color: var(--primary-400);
+    font-weight: 600;
+    /* Reduced margin-bottom from 0.5rem to 0.25rem */
+    margin-bottom: 0.25rem;
+    /* Explicitly setting font size to be smaller */
+    font-size: 0.4rem;
+}
+
+.team-bio {
+    color: var(--dark-300);
+    /* Reduced line-height from 0.8 to 0.7 (making it tighter) */
+    line-height: 0.7;
+    /* Explicitly setting font size to be smaller */
+    font-size: 0.35rem;
+}
+
+
+    /* Impact Section */
+.impact-section {
+    /* Reduced padding from 6rem 0 to 3rem 0 */
+    padding: 3rem 0;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.impact-grid {
+    display: grid;
+    /* Reduced minmax from 250px to 125px */
+    grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+    /* Reduced gap from 2rem to 1rem */
+    gap: 1rem;
+}
+
+.impact-card {
+    background: var(--glass-bg);
+    /* Blur kept the same for visual quality */
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    /* Reduced radius from var(--radius-xl) to var(--radius-lg) */
+    border-radius: var(--radius-lg);
+    /* Reduced padding from 3rem 2rem to 1.5rem 1rem */
+    padding: 1.5rem 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.impact-card:hover {
+    /* Reduced transform offset from -5px to -2px */
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-xl);
+}
+
+.impact-number {
+    /* Reduced font-size from 2.5rem to 1.25rem */
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--primary-400);
+    /* Reduced margin-bottom from 0.5rem to 0.25rem */
+    margin-bottom: 0.25rem;
+}
+
+.impact-label {
+    color: var(--dark-300);
+    font-weight: 500;
+    /* Font size defaults to parent, but if you wanted to explicitly reduce a typical size of 1rem to 0.5rem: */
+    font-size: 0.5rem;
+}
+    
+
+    /* About Section */
+.about-section {
+    /* Reduced padding from 6rem 0 to 3rem 0 */
+    padding: 3rem 0;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.features-grid {
+    display: grid;
+    /* Reduced minmax from 280px to 140px */
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    /* Reduced gap from 0.3rem to 0.15rem */
+    gap: 0.15rem;
+}
+
+.feature-card {
+    background: var(--glass-bg);
+    /* Blur kept the same for visual quality */
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    /* Reduced radius from var(--radius-xl) to var(--radius-lg) */
+    border-radius: var(--radius-lg);
+    /* Reduced padding to make the card smaller from 0.1rem 0.1rem to 0.05rem 0.05rem */
+    padding: 0.05rem 0.05rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    /* Reduced transform offset from -5px to -2px */
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-xl);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.feature-icon {
+    /* Reduced width from 70px to 35px */
+    width: 35px;
+    /* Reduced height from 70px to 35px */
+    height: 35px;
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Reduced margin-bottom from 1.5rem to 0.75rem */
+    margin: 0 auto 0.75rem;
+    /* Reduced font-size from 2rem to 1rem */
+    font-size: 1rem;
+    color: white;
+}
+
+.feature-card h3 {
+    /* Reduced font-size from 1.5rem to 0.75rem */
+    font-size: 0.75rem;
+    /* Reduced margin-bottom from 1rem to 0.5rem */
+    margin-bottom: 0.5rem;
+    color: var(--dark-100);
+}
+
+.feature-card p {
+    color: var(--dark-300);
+    /* line-height kept the same for readability, but reduced slightly */
+    line-height: 1.5;
+    /* Font size defaults to parent, but if you wanted to explicitly reduce: font-size: 0.8rem; */
+}
+
+
+    /* Mission Section */
+.mission-section {
+    /* Reduced padding from 6rem 0 to 3rem 0 */
+    padding: 3rem 0;
+}
+
+.mission-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* Reduced gap from 4rem to 2rem */
+    gap: 2rem;
+    align-items: center;
+}
+
+.mission-text h2 {
+    /* Reduced font-size from 2.5rem to 1.25rem */
+    font-size: 1.25rem;
+    /* Reduced margin-bottom from 1.5rem to 0.75rem */
+    margin-bottom: 0.75rem;
+    color: var(--dark-50);
+}
+
+.mission-text p {
+    /* Reduced font-size from 1.125rem to 0.5625rem (approx. 0.6rem) */
+    font-size: 0.6rem; 
+    color: var(--dark-300);
+    /* line-height kept the same for readability, but reduced slightly */
+    line-height: 1.5; 
+    /* Reduced margin-bottom from 2rem to 1rem */
+    margin-bottom: 1rem;
+}
+
+.mission-stats {
+    display: flex;
+    /* Reduced gap from 3rem to 1.5rem */
+    gap: 1.5rem;
+}
+
+.mission-stat {
+    text-align: center;
+}
+
+.mission-number {
+    /* Reduced font-size from 2rem to 1rem */
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--primary-400);
+    /* Reduced margin-bottom from 0.5rem to 0.25rem */
+    margin-bottom: 0.25rem;
+}
+
+.mission-label {
+    color: var(--dark-400);
+    /* Reduced font-size from 0.875rem to 0.4375rem (approx. 0.45rem) */
+    font-size: 0.45rem;
+}
+
+.mission-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.earth-visual {
+    /* Reduced width from 200px to 100px */
+    width: 100px;
+    /* Reduced height from 200px to 100px */
+    height: 100px;
+    background: linear-gradient(135deg, var(--secondary-500), var(--secondary-600));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Reduced font-size from 4rem to 2rem */
+    font-size: 2rem;
+    color: white;
+    /* Animation speed kept the same for consistent visual effect */
+    animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
     
     .floating-elements {
         position: relative;
@@ -3795,6 +4428,138 @@ a:focus {
     border-color: var(--error-500);
 }
 
+/* ==========================================================================
+   Language Selector Dropdown
+   ========================================================================== */
 
+/* Layout for the header area where user status, language, and login are */
+.user-auth {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Align items to the right */
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+    position: relative;
+}
 
+.user-auth #userStatus {
+    font-size: var(--font-size-sm);
+    color: var(--dark-300);
+}
+
+.language-selector {
+    position: relative;
+    z-index: 1000; /* Ensure dropdown is on top of other content */
+}
+
+.lang-toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    color: var(--dark-100);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.lang-toggle:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--primary-400);
+}
+
+.lang-toggle i.fa-globe {
+    color: var(--primary-400);
+}
+
+.lang-dropdown {
+    position: absolute;
+    top: 100%; /* Position below the button */
+    right: 0;
+    margin-top: var(--space-1);
+    background: var(--dark-800); /* Slightly darker background for contrast */
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-xl);
+    width: 150px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+    padding: var(--space-1);
+    z-index: 2001;
+}
+
+.lang-dropdown.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    z-index: 2001;
+}
+
+.lang-option {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2);
+    color: var(--dark-200);
+    border-radius: var(--radius-sm);
+    transition: all 0.2s ease;
+    text-align: left;
+    font-size: var(--font-size-sm);
+}
+
+.lang-option:hover {
+    background: var(--glass-bg);
+    color: var(--dark-50);
+}
+
+/* The dot indicator */
+.lang-option .lang-dot {
+    font-size: 0.5rem; /* Small dot size */
+    color: transparent; /* Default to transparent */
+    transition: color 0.2s ease;
+}
+
+/* Style for the currently selected language */
+.lang-option.selected {
+    background: rgba(16, 185, 129, 0.1); /* Light green background */
+    color: var(--dark-50);
+    font-weight: 600;
+}
+
+.lang-option.selected .lang-dot {
+    color: var(--primary-400); /* Green dot for selected language */
+}
+
+/* ==== Carbon Credits Result Box ==== */
+.carbon-credits-box {
+    text-align: center;
+    margin-top: 25px;
+    padding: 25px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(15px);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    animation: slideInUp 0.5s ease;
+}
+
+.carbon-credits-box h3 {
+    color: var(--primary-300);
+    margin-bottom: 10px;
+    font-size: var(--font-size-xl);
+}
+
+.credits-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--primary-400);
+    text-shadow: 0 0 10px rgba(16,185,129,0.4);
+}
 
