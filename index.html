@@ -34,7 +34,29 @@
             <i class="fas fa-leaf"></i>
             Carbon Calculator Yanga
         </h1>
-	 <div class="user-auth">
+<div class="user-auth">
+        <div class="language-selector">
+            <button class="lang-toggle" id="langToggle">
+                <i class="fas fa-globe"></i>
+                <span id="currentLang">English</span>
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="lang-dropdown" id="langDropdown">
+                <a href="#" class="lang-option selected" data-lang="en">
+                    <i class="fas fa-circle lang-dot"></i>English
+                </a>
+                <a href="#" class="lang-option" data-lang="bem">
+                    <i class="fas fa-circle lang-dot"></i>Bemba
+                </a>
+                <a href="#" class="lang-option" data-lang="loz">
+                    <i class="fas fa-circle lang-dot"></i>Lozi
+                </a>
+                <a href="#" class="lang-option" data-lang="nya">
+                    <i class="fas fa-circle lang-dot"></i>Nyanja
+                </a>
+            </div>
+        </div>
+        
         <span id="userStatus">Not logged in</span>
             		<button onclick="window.location.href='login.html'" class="auth-button" id="authButton">
         		<i class="fas fa-arrow-left"></i>Login/signup</button>
@@ -720,6 +742,15 @@
             </div>
 
             <div class="total-emissions" id="totalEmissions">Total Emissions: 333.0 kg CO₂e/month</div>
+            <!-- NEW: Approx Carbon Credits Section -->
+<div id="carbonCreditsSection" style="display:none;" class="carbon-credits-box">
+    <h3>🌍 Approximate Carbon Credit Potential</h3>
+    <p class="credits-value">
+        <span id="carbonCreditsValue">0</span> credits / year
+    </p>
+    <small>Based on your annual CO₂e emissions.</small>
+</div>
+
             <div class="daily-average" id="dailyAverage">Daily Average: 10.9 kg CO₂e/day</div>
 
 <div class="summary-actions">
@@ -940,6 +971,46 @@ auth.onAuthStateChanged((user) => {
 
 
 <script src="app.js"></script>
+
+<script>
+    // Demo script for language dropdown functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const langToggle = document.getElementById('langToggle');
+        const langDropdown = document.getElementById('langDropdown');
+        const currentLangSpan = document.getElementById('currentLang');
+        const langOptions = document.querySelectorAll('.lang-option');
+
+        // Toggle dropdown visibility
+        langToggle.addEventListener('click', function(event) {
+            event.stopPropagation();
+            langDropdown.classList.toggle('show');
+        });
+
+        // Handle language selection (visual demo only)
+        langOptions.forEach(option => {
+            option.addEventListener('click', function(event) {
+                event.preventDefault();
+                
+                // Update selected class (which adds the green dot via CSS)
+                langOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                const selectedLangText = this.textContent.trim().replace('English', 'English').replace('Bemba', 'Bemba').replace('Lozi', 'Lozi').replace('Nyanja', 'Nyanja');
+                currentLangSpan.textContent = selectedLangText;
+                
+                // Hide dropdown
+                langDropdown.classList.remove('show');
+            });
+        });
+
+        // Hide dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!langToggle.contains(event.target) && !langDropdown.contains(event.target)) {
+                langDropdown.classList.remove('show');
+            }
+        });
+    });
+</script>
 
 </body>
 </html>
