@@ -604,9 +604,14 @@ function displayOpenAirResults(data) {
     `;
 
     // Update total emissions
-    const annualTonnes = (data.total * 12 / 1000).toFixed(1);
-    document.getElementById('totalEmissions').textContent = `Total Annual Emissions: ${annualTonnes} Tonnes CO₂e/Year`;
+    const annualTonnes = (data.total * 12) / 1000; // numeric tonnes/year
+    const approxCredits = annualTonnes;
+
+    document.getElementById('totalEmissions').textContent = `Total Annual Emissions: ${annualTonnes.toFixed(1)} Tonnes CO₂e/Year`;
     document.getElementById('dailyAverage').textContent = `Daily Average: ${dailyAverage} kg CO₂e/day`;
+    document.getElementById("carbonCreditsValue").textContent = approxCredits.toFixed(1);
+    document.getElementById("carbonCreditsSection").style.display = "block";
+
 
     // Add equivalent comparison
     const drivingEquivalent = (data.total / 2.3).toFixed(0); // approx 2.3kg CO₂e per km driving
@@ -815,9 +820,15 @@ async function calculateStudent() {
 
 
         // Update total emissions (show in tonnes for annual total)
-        const annualTonnes = (data.total * 12 / 1000).toFixed(1);
-        document.getElementById('totalEmissions').textContent = `Total Annual Emissions: ${annualTonnes} Tonnes CO₂e/Year`;
+        const annualTonnes = (data.total * 12) / 1000; // numeric value (tonnes/year)
+        const approxCredits = annualTonnes; // 1 tonne ≈ 1 credit
+
+        document.getElementById('totalEmissions').textContent = `Total Annual Emissions: ${annualTonnes.toFixed(1)} Tonnes CO₂e/Year`;
         document.getElementById('dailyAverage').textContent = `Daily Average: ${dailyAverage} kg CO₂e/day`;
+
+        // now approxCredits is numeric, safe to call toFixed()
+        document.getElementById("carbonCreditsValue").textContent = approxCredits.toFixed(1);
+        document.getElementById("carbonCreditsSection").style.display = "block";
 
         document.getElementById('results').classList.add('active');
         document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
